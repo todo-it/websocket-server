@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
-using System.Threading;
-using WebSockets.Common;
-using WebSockets.Server.Http;
 using System.IO;
 using WebSockets.Common.Common;
 using WebSockets.Common.Exceptions;

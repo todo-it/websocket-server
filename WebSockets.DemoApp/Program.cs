@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
 using WebSockets.Server;
 using System.Diagnostics;
 using WebSocketsCmd.Client;
 using WebSocketsCmd.Properties;
-using WebSockets.Client;
-using System.Threading.Tasks;
-using WebSockets.Common;
 using System.Threading;
-using WebSockets;
 using WebSocketsCmd.Server;
-using System.IO;
 using WebSockets.Common.Common;
 using WebSockets.Common.Events;
 
