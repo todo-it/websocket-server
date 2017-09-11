@@ -42,26 +42,26 @@ namespace WebSockets.Common
             // process first byte
             byte finBitFlag = 0x80;
             byte opCodeFlag = 0x0F;
-            bool isFinBitSet = (byte1 & finBitFlag) == finBitFlag;
-            WebSocketOpCode opCode = (WebSocketOpCode) (byte1 & opCodeFlag);
+            var isFinBitSet = (byte1 & finBitFlag) == finBitFlag;
+            var opCode = (WebSocketOpCode) (byte1 & opCodeFlag);
 
             // read and process second byte
-            byte byte2 = (byte) stream.ReadByte();
+            var byte2 = (byte) stream.ReadByte();
             byte maskFlag = 0x80;
-            bool isMaskBitSet = (byte2 & maskFlag) == maskFlag;
-            uint len = ReadLength(byte2, stream);
+            var isMaskBitSet = (byte2 & maskFlag) == maskFlag;
+            var len = ReadLength(byte2, stream);
             byte[] decodedPayload;
 
             // use the masking key to decode the data if needed
             if (isMaskBitSet)
             {
                 const int maskKeyLen = 4;
-                byte[] maskKey = BinaryReaderWriter.ReadExactly(maskKeyLen, stream);
-                byte[] encodedPayload = BinaryReaderWriter.ReadExactly((int) len, stream);
+                var maskKey = BinaryReaderWriter.ReadExactly(maskKeyLen, stream);
+                var encodedPayload = BinaryReaderWriter.ReadExactly((int) len, stream);
                 decodedPayload = new byte[len];
 
                 // apply the mask key
-                for (int i = 0; i < encodedPayload.Length; i++)
+                for (var i = 0; i < encodedPayload.Length; i++)
                 {
                     decodedPayload[i] = (Byte) (encodedPayload[i] ^ maskKey[i%maskKeyLen]);
                 }
@@ -71,14 +71,14 @@ namespace WebSockets.Common
                 decodedPayload = BinaryReaderWriter.ReadExactly((int) len, stream);
             }
 
-            WebSocketFrame frame = new WebSocketFrame(isFinBitSet, opCode, decodedPayload, true);
+            var frame = new WebSocketFrame(isFinBitSet, opCode, decodedPayload, true);
             return frame;
         }
 
         private static uint ReadLength(byte byte2, Stream stream)
         {
             byte payloadLenFlag = 0x7F;
-            uint len = (uint) (byte2 & payloadLenFlag);
+            var len = (uint) (byte2 & payloadLenFlag);
 
             // read a short length or a long length depending on the value of len
             if (len == 126)

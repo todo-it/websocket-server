@@ -27,7 +27,7 @@ namespace WebSockets.Server.Http
             HttpHelper.WriteHttpHeader("HTTP/1.1 400 Regular web requests not supported", _stream);
 
             // limit what we log. Headers can be up to 16K in size
-            string header = _header.Length > 255 ? _header.Substring(0,255) + "..." : _header;
+            var header = _header.Length > 255 ? _header.Substring(0,255) + "..." : _header;
             _logger.Warning(this.GetType(), "Regular web requests not supported: '{0}'", header);
         }
 

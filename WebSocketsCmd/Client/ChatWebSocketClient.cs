@@ -16,7 +16,7 @@ namespace WebSocketsCmd.Client
 
         public void Send(string text)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(text);
+            var buffer = Encoding.UTF8.GetBytes(text);
             Send(WebSocketOpCode.TextFrame, buffer);
         }
     }

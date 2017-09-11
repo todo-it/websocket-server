@@ -24,7 +24,7 @@ namespace WebSocketsCmd
         {
             using (var client = new ChatWebSocketClient(true, logger))
             {
-                Uri uri = new Uri($"ws://{hostname}:{port}/chat");
+                var uri = new Uri($"ws://{hostname}:{port}/chat");
                 client.TextFrame += Client_TextFrame;
                 client.ConnectionOpened += Client_ConnectionOpened;
 
@@ -63,9 +63,9 @@ namespace WebSocketsCmd
                 var port = Settings.Default.Port;
                 
                 // used to decide what to do with incoming connections
-                ServiceFactory serviceFactory = new ServiceFactory(logger);
+                var serviceFactory = new ServiceFactory(logger);
 
-                using (WebServer server = new WebServer(serviceFactory, logger))
+                using (var server = new WebServer(serviceFactory, logger))
                 {
                     server.Listen(port);
 

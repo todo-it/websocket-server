@@ -72,7 +72,7 @@ namespace WebSockets.Common
 
         protected virtual void Send(string text)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            var bytes = Encoding.UTF8.GetBytes(text);
             Send(WebSocketOpCode.TextFrame, bytes, true);
         }
 
@@ -136,7 +136,7 @@ namespace WebSockets.Common
 
         protected virtual void OnConnectionClose(byte[] payload)
         {
-            ConnectionCloseEventArgs args = GetConnectionCloseEventArgsFromPayload(payload);
+            var args = GetConnectionCloseEventArgsFromPayload(payload);
 
             if (args.Reason == null)
             {
@@ -163,10 +163,10 @@ namespace WebSockets.Common
             // this is a guid as per the web socket spec
             const string webSocketGuid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
-            string concatenated = secWebSocketKey + webSocketGuid;
-            byte[] concatenatedAsBytes = Encoding.UTF8.GetBytes(concatenated);
-            byte[] sha1Hash = SHA1.Create().ComputeHash(concatenatedAsBytes);
-            string secWebSocketAccept = Convert.ToBase64String(sha1Hash);
+            var concatenated = secWebSocketKey + webSocketGuid;
+            var concatenatedAsBytes = Encoding.UTF8.GetBytes(concatenated);
+            var sha1Hash = SHA1.Create().ComputeHash(concatenatedAsBytes);
+            var secWebSocketAccept = Convert.ToBase64String(sha1Hash);
             return secWebSocketAccept;
         }
 
@@ -174,17 +174,17 @@ namespace WebSockets.Common
         {
             if (payload.Length >= 2)
             {
-                using (MemoryStream stream = new MemoryStream(payload))
+                using (var stream = new MemoryStream(payload))
                 {
-                    ushort code = BinaryReaderWriter.ReadUShortExactly(stream, false);
+                    var code = BinaryReaderWriter.ReadUShortExactly(stream, false);
 
                     try
                     {
-                        WebSocketCloseCode closeCode = (WebSocketCloseCode)code;
+                        var closeCode = (WebSocketCloseCode)code;
 
                         if (payload.Length > 2)
                         {
-                            string reason = Encoding.UTF8.GetString(payload, 2, payload.Length - 2);
+                            var reason = Encoding.UTF8.GetString(payload, 2, payload.Length - 2);
                             return new ConnectionCloseEventArgs(closeCode, reason);
                         }
                         else
@@ -205,10 +205,10 @@ namespace WebSockets.Common
 
         private void MainReadLoop()
         {
-            Stream stream = _stream;
+            var stream = _stream;
             OnConnectionOpened();
-            WebSocketFrameReader reader = new WebSocketFrameReader();
-            List<WebSocketFrame> fragmentedFrames = new List<WebSocketFrame>();
+            var reader = new WebSocketFrameReader();
+            var fragmentedFrames = new List<WebSocketFrame>();
 
             while (true)
             {
@@ -238,7 +238,7 @@ namespace WebSockets.Common
                     switch (_multiFrameOpcode)
                     {
                         case WebSocketOpCode.TextFrame:
-                            String data = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
+                            var data = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
                             OnTextMultiFrame(data, frame.IsFinBitSet);
                             break;
                         case WebSocketOpCode.BinaryFrame:
@@ -260,7 +260,7 @@ namespace WebSockets.Common
                             OnPong(frame.DecodedPayload);
                             break;
                         case WebSocketOpCode.TextFrame:
-                            String data = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
+                            var data = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
                             if (frame.IsFinBitSet)
                             {
                                 OnTextFrame(data);

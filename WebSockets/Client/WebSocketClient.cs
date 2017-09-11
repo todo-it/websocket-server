@@ -55,7 +55,7 @@ namespace WebSockets.Client
         {
             if (isSecure)
             {
-                SslStream sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                var sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
                 _logger.Information(this.GetType(), "Attempting to secure connection...");
                 sslStream.AuthenticateAsClient("clusteredanalytics.com");
                 _logger.Information(this.GetType(), "Connection successfully secured.");
@@ -72,8 +72,8 @@ namespace WebSockets.Client
         {
             if (!_isOpen)
             {
-                string host = uri.Host;
-                int port = uri.Port;
+                var host = uri.Host;
+                var port = uri.Port;
                 _tcpClient = new TcpClient();
                 _tcpClient.NoDelay = _noDelay;
 
@@ -87,7 +87,7 @@ namespace WebSockets.Client
                     _tcpClient.Connect(host, port);
                 }
 
-                bool isSecure = port == 443;
+                var isSecure = port == 443;
                 _stream = GetStream(_tcpClient, isSecure);
 
                 _uri = uri;
@@ -99,30 +99,30 @@ namespace WebSockets.Client
 
         protected override void PerformHandshake(Stream stream)
         {
-            Uri uri = _uri;
-            WebSocketFrameReader reader = new WebSocketFrameReader();
-            Random rand = new Random();
-            byte[] keyAsBytes = new byte[16];
+            var uri = _uri;
+            var reader = new WebSocketFrameReader();
+            var rand = new Random();
+            var keyAsBytes = new byte[16];
             rand.NextBytes(keyAsBytes);
-            string secWebSocketKey = Convert.ToBase64String(keyAsBytes);
+            var secWebSocketKey = Convert.ToBase64String(keyAsBytes);
 
-            string handshakeHttpRequestTemplate = @"GET {0} HTTP/1.1{4}" +
+            var handshakeHttpRequestTemplate = @"GET {0} HTTP/1.1{4}" +
                                                   "Host: {1}:{2}{4}" +
                                                   "Upgrade: websocket{4}" +
                                                   "Connection: Upgrade{4}" +
                                                   "Sec-WebSocket-Key: {3}{4}" +
                                                   "Sec-WebSocket-Version: 13{4}{4}";
 
-            string handshakeHttpRequest = string.Format(handshakeHttpRequestTemplate, uri.PathAndQuery, uri.Host, uri.Port, secWebSocketKey, Environment.NewLine);
-            byte[] httpRequest = Encoding.UTF8.GetBytes(handshakeHttpRequest);
+            var handshakeHttpRequest = string.Format(handshakeHttpRequestTemplate, uri.PathAndQuery, uri.Host, uri.Port, secWebSocketKey, Environment.NewLine);
+            var httpRequest = Encoding.UTF8.GetBytes(handshakeHttpRequest);
             stream.Write(httpRequest, 0, httpRequest.Length);
             _logger.Information(this.GetType(), "Handshake sent. Waiting for response.");
 
             // make sure we escape the accept string which could contain special regex characters
-            string regexPattern = "Sec-WebSocket-Accept: (.*)";
-            Regex regex = new Regex(regexPattern);
+            var regexPattern = "Sec-WebSocket-Accept: (.*)";
+            var regex = new Regex(regexPattern);
 
-            string response = string.Empty;
+            var response = string.Empty;
 
             try
             {
@@ -134,8 +134,8 @@ namespace WebSockets.Client
             }
 
             // check the accept string
-            string expectedAcceptString = base.ComputeSocketAcceptString(secWebSocketKey);
-            string actualAcceptString = regex.Match(response).Groups[1].Value.Trim();
+            var expectedAcceptString = base.ComputeSocketAcceptString(secWebSocketKey);
+            var actualAcceptString = regex.Match(response).Groups[1].Value.Trim();
             if (expectedAcceptString != actualAcceptString)
             {
                 throw new WebSocketHandshakeFailedException(string.Format("Handshake failed because the accept string from the server '{0}' was not the expected string '{1}'", expectedAcceptString, actualAcceptString));
@@ -150,7 +150,7 @@ namespace WebSockets.Client
         {
             if (_isOpen)
             {
-                using (MemoryStream stream = new MemoryStream())
+                using (var stream = new MemoryStream())
                 {
                     // set the close reason to GoingAway
                     BinaryReaderWriter.WriteUShort((ushort) WebSocketCloseCode.GoingAway, stream, false);

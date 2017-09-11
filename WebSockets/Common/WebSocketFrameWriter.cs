@@ -27,17 +27,17 @@ namespace WebSockets.Common
         {
             // best to write everything to a memory stream before we push it onto the wire
             // not really necessary but I like it this way
-            using (MemoryStream memoryStream = new MemoryStream())
+            using (var memoryStream = new MemoryStream())
             {
-                byte finBitSetAsByte = isLastFrame ? (byte) 0x80 : (byte) 0x00;
-                byte byte1 = (byte) (finBitSetAsByte | (byte) opCode);
+                var finBitSetAsByte = isLastFrame ? (byte) 0x80 : (byte) 0x00;
+                var byte1 = (byte) (finBitSetAsByte | (byte) opCode);
                 memoryStream.WriteByte(byte1);
 
                 // NB, dont set the mask flag. No need to mask data from server to client
                 // depending on the size of the length we want to write it as a byte, ushort or ulong
                 if (payload.Length < 126)
                 {
-                    byte byte2 = (byte) payload.Length;
+                    var byte2 = (byte) payload.Length;
                     memoryStream.WriteByte(byte2);
                 }
                 else if (payload.Length <= ushort.MaxValue)
@@ -54,7 +54,7 @@ namespace WebSockets.Common
                 }
 
                 memoryStream.Write(payload, 0, payload.Length);
-                byte[] buffer = memoryStream.ToArray();
+                var buffer = memoryStream.ToArray();
                 _stream.Write(buffer, 0, buffer.Length);
             }
         }
@@ -66,7 +66,7 @@ namespace WebSockets.Common
 
         public void WriteText(string text)
         {
-            byte[] responseBytes = Encoding.UTF8.GetBytes(text);
+            var responseBytes = Encoding.UTF8.GetBytes(text);
             Write(WebSocketOpCode.TextFrame, responseBytes);
         }
     }

@@ -43,24 +43,24 @@ namespace WebSockets.Server.WebSocket
 
         protected override void PerformHandshake(Stream stream)
         {
-            string header = _header;
+            var header = _header;
 
             try
             {
-                Regex webSocketKeyRegex = new Regex("Sec-WebSocket-Key: (.*)");
-                Regex webSocketVersionRegex = new Regex("Sec-WebSocket-Version: (.*)");
+                var webSocketKeyRegex = new Regex("Sec-WebSocket-Key: (.*)");
+                var webSocketVersionRegex = new Regex("Sec-WebSocket-Version: (.*)");
 
                 // check the version. Support version 13 and above
                 const int WebSocketVersion = 13;
-                int secWebSocketVersion = Convert.ToInt32(webSocketVersionRegex.Match(header).Groups[1].Value.Trim());
+                var secWebSocketVersion = Convert.ToInt32(webSocketVersionRegex.Match(header).Groups[1].Value.Trim());
                 if (secWebSocketVersion < WebSocketVersion)
                 {
                     throw new WebSocketVersionNotSupportedException(string.Format("WebSocket Version {0} not suported. Must be {1} or above", secWebSocketVersion, WebSocketVersion));
                 }
 
-                string secWebSocketKey = webSocketKeyRegex.Match(header).Groups[1].Value.Trim();
-                string setWebSocketAccept = base.ComputeSocketAcceptString(secWebSocketKey);
-                string response = ("HTTP/1.1 101 Switching Protocols" + Environment.NewLine
+                var secWebSocketKey = webSocketKeyRegex.Match(header).Groups[1].Value.Trim();
+                var setWebSocketAccept = base.ComputeSocketAcceptString(secWebSocketKey);
+                var response = ("HTTP/1.1 101 Switching Protocols" + Environment.NewLine
                                    + "Connection: Upgrade" + Environment.NewLine
                                    + "Upgrade: websocket" + Environment.NewLine
                                    + "Sec-WebSocket-Accept: " + setWebSocketAccept);
@@ -70,7 +70,7 @@ namespace WebSockets.Server.WebSocket
             }
             catch (WebSocketVersionNotSupportedException ex)
             {
-                string response = "HTTP/1.1 426 Upgrade Required" + Environment.NewLine + "Sec-WebSocket-Version: 13";
+                var response = "HTTP/1.1 426 Upgrade Required" + Environment.NewLine + "Sec-WebSocket-Version: 13";
                 HttpHelper.WriteHttpHeader(response, stream);
                 throw;
             }
@@ -92,7 +92,7 @@ namespace WebSockets.Server.WebSocket
             // send special web socket close message. Don't close the network stream, it will be disposed later
             if (_stream.CanWrite && !_isDisposed)
             {
-                using (MemoryStream stream = new MemoryStream())
+                using (var stream = new MemoryStream())
                 {
                     // set the close reason to Normal
                     BinaryReaderWriter.WriteUShort((ushort) WebSocketCloseCode.Normal, stream, false);

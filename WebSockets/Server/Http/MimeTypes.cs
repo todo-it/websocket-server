@@ -13,7 +13,7 @@ namespace WebSockets.Server.Http
     {
         public MimeTypes(string webRoot)
         {
-            string configFileName = webRoot + @"\MimeTypes.config";
+            var configFileName = webRoot + @"\MimeTypes.config";
             if (!File.Exists(configFileName))
             {
                 throw new FileNotFoundException("Mime Types config file not found: " + configFileName);
@@ -21,12 +21,12 @@ namespace WebSockets.Server.Http
 
             try
             {
-                XmlDocument document = new XmlDocument();
+                var document = new XmlDocument();
                 document.Load(configFileName);
                 foreach (XmlNode node in document.SelectNodes("configuration/system.webServer/staticContent/mimeMap"))
                 {
-                    string fileExtension = node.Attributes["fileExtension"].Value;
-                    string mimeType = node.Attributes["mimeType"].Value;
+                    var fileExtension = node.Attributes["fileExtension"].Value;
+                    var mimeType = node.Attributes["mimeType"].Value;
                     this.Add(fileExtension, mimeType);
                 }
             }

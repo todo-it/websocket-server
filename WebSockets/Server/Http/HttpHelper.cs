@@ -15,10 +15,10 @@ namespace WebSockets.Server.Http
     {
         public static string ReadHttpHeader(Stream stream)
         {
-            int length = 1024*16; // 16KB buffer more than enough for http header
-            byte[] buffer = new byte[length];
-            int offset = 0;
-            int bytesRead = 0;
+            var length = 1024*16; // 16KB buffer more than enough for http header
+            var buffer = new byte[length];
+            var offset = 0;
+            var bytesRead = 0;
             do
             {
                 if (offset >= length)
@@ -28,7 +28,7 @@ namespace WebSockets.Server.Http
 
                 bytesRead = stream.Read(buffer, offset, length - offset);
                 offset += bytesRead;
-                string header = Encoding.UTF8.GetString(buffer, 0, offset);
+                var header = Encoding.UTF8.GetString(buffer, 0, offset);
 
                 // as per http specification, all headers should end this this
                 if (header.Contains("\r\n\r\n"))
@@ -44,7 +44,7 @@ namespace WebSockets.Server.Http
         public static void WriteHttpHeader(string response, Stream stream)
         {
             response = response.Trim() + Environment.NewLine + Environment.NewLine;
-            Byte[] bytes = Encoding.UTF8.GetBytes(response);
+            var bytes = Encoding.UTF8.GetBytes(response);
             stream.Write(bytes, 0, bytes.Length);
         }
     }

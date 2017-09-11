@@ -43,7 +43,7 @@ namespace WebSockets
             try
             {
                 _sslCertificate = sslCertificate;
-                IPAddress localAddress = IPAddress.Any;
+                var localAddress = IPAddress.Any;
                 _listener = new TcpListener(localAddress, port);
                 _listener.Start();
                 _logger.Information(this.GetType(), "Server started listening on port {0}", port);
@@ -51,7 +51,7 @@ namespace WebSockets
             }
             catch (SocketException ex)
             {
-                string message = string.Format("Error listening on port {0}. Make sure IIS or another application is not running and consuming your port.", port);
+                var message = string.Format("Error listening on port {0}. Make sure IIS or another application is not running and consuming your port.", port);
                 throw new ServerListenerSocketException(message, ex);
             }
         }
@@ -69,11 +69,11 @@ namespace WebSockets
         /// </summary>
         public int Listen()
         {
-            IPAddress localAddress = IPAddress.Any;
+            var localAddress = IPAddress.Any;
             _listener = new TcpListener(localAddress, 0);
             _listener.Start();
             StartAccept();
-            int port = ((IPEndPoint) _listener.LocalEndpoint).Port;
+            var port = ((IPEndPoint) _listener.LocalEndpoint).Port;
             _logger.Information(this.GetType(), "Server started listening on port {0}", port);
             return port;
         }
@@ -87,18 +87,18 @@ namespace WebSockets
         private static ConnectionDetails GetConnectionDetails(Stream stream, TcpClient tcpClient)
         {
             // read the header and check that it is a GET request
-            string header = HttpHelper.ReadHttpHeader(stream);
-            Regex getRegex = new Regex(@"^GET(.*)HTTP\/1\.1", RegexOptions.IgnoreCase);
+            var header = HttpHelper.ReadHttpHeader(stream);
+            var getRegex = new Regex(@"^GET(.*)HTTP\/1\.1", RegexOptions.IgnoreCase);
 
-            Match getRegexMatch = getRegex.Match(header);
+            var getRegexMatch = getRegex.Match(header);
             if (getRegexMatch.Success)
             {
                 // extract the path attribute from the first line of the header
-                string path = getRegexMatch.Groups[1].Value.Trim();
+                var path = getRegexMatch.Groups[1].Value.Trim();
 
                 // check if this is a web socket upgrade request
-                Regex webSocketUpgradeRegex = new Regex("Upgrade: websocket", RegexOptions.IgnoreCase);
-                Match webSocketUpgradeRegexMatch = webSocketUpgradeRegex.Match(header);
+                var webSocketUpgradeRegex = new Regex("Upgrade: websocket", RegexOptions.IgnoreCase);
+                var webSocketUpgradeRegexMatch = webSocketUpgradeRegex.Match(header);
 
                 if (webSocketUpgradeRegexMatch.Success)
                 {
@@ -128,7 +128,7 @@ namespace WebSockets
 
             try
             {
-                SslStream sslStream = new SslStream(stream, false);
+                var sslStream = new SslStream(stream, false);
                 _logger.Information(this.GetType(), "Attempting to secure connection...");
                 sslStream.AuthenticateAsServer(_sslCertificate, false, SslProtocols.Tls, true);
                 _logger.Information(this.GetType(), "Connection successfully secured");
@@ -154,18 +154,18 @@ namespace WebSockets
                 // Client sends a close conection request OR
                 // An unhandled exception is thrown OR
                 // The server is disposed
-                using (TcpClient tcpClient = _listener.EndAcceptTcpClient(res))
+                using (var tcpClient = _listener.EndAcceptTcpClient(res))
                 {
                     // we are ready to listen for more connections (on another thread)
                     StartAccept();
                     _logger.Information(this.GetType(), "Server: Connection opened");
 
                     // get a secure or insecure stream
-                    Stream stream = GetStream(tcpClient);
+                    var stream = GetStream(tcpClient);
 
                     // extract the connection details and use those details to build a connection
-                    ConnectionDetails connectionDetails = GetConnectionDetails(stream, tcpClient);
-                    using (IService service = _serviceFactory.CreateInstance(connectionDetails))
+                    var connectionDetails = GetConnectionDetails(stream, tcpClient);
+                    using (var service = _serviceFactory.CreateInstance(connectionDetails))
                     {
                         try
                         {
@@ -213,7 +213,7 @@ namespace WebSockets
             }
 
             // safely attempt to close each connection
-            foreach (IDisposable openConnection in openConnections)
+            foreach (var openConnection in openConnections)
             {
                 try
                 {
