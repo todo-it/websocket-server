@@ -56,14 +56,14 @@ namespace WebSockets.Client
             if (isSecure)
             {
                 var sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
-                _logger.Information(this.GetType(), "Attempting to secure connection...");
+                _logger.Information(GetType(), "Attempting to secure connection...");
                 sslStream.AuthenticateAsClient("clusteredanalytics.com");
-                _logger.Information(this.GetType(), "Connection successfully secured.");
+                _logger.Information(GetType(), "Connection successfully secured.");
                 return sslStream;
             }
             else
             {
-                _logger.Information(this.GetType(), "Connection not secure");
+                _logger.Information(GetType(), "Connection not secure");
                 return tcpClient.GetStream();
             }
         }
@@ -116,7 +116,7 @@ namespace WebSockets.Client
             var handshakeHttpRequest = string.Format(handshakeHttpRequestTemplate, uri.PathAndQuery, uri.Host, uri.Port, secWebSocketKey, Environment.NewLine);
             var httpRequest = Encoding.UTF8.GetBytes(handshakeHttpRequest);
             stream.Write(httpRequest, 0, httpRequest.Length);
-            _logger.Information(this.GetType(), "Handshake sent. Waiting for response.");
+            _logger.Information(GetType(), "Handshake sent. Waiting for response.");
 
             // make sure we escape the accept string which could contain special regex characters
             var regexPattern = "Sec-WebSocket-Accept: (.*)";
@@ -134,7 +134,7 @@ namespace WebSockets.Client
             }
 
             // check the accept string
-            var expectedAcceptString = base.ComputeSocketAcceptString(secWebSocketKey);
+            var expectedAcceptString = ComputeSocketAcceptString(secWebSocketKey);
             var actualAcceptString = regex.Match(response).Groups[1].Value.Trim();
             if (expectedAcceptString != actualAcceptString)
             {
@@ -142,7 +142,7 @@ namespace WebSockets.Client
             }
             else
             {
-                _logger.Information(this.GetType(), "Handshake response received. Connection upgraded to WebSocket protocol.");
+                _logger.Information(GetType(), "Handshake response received. Connection upgraded to WebSocket protocol.");
             }
         }
 
@@ -157,7 +157,7 @@ namespace WebSockets.Client
 
                     // send close message to server to begin the close handshake
                     Send(WebSocketOpCode.ConnectionClose, stream.ToArray());
-                    _logger.Information(this.GetType(), "Sent websocket close message to server. Reason: GoingAway");
+                    _logger.Information(GetType(), "Sent websocket close message to server. Reason: GoingAway");
                 }
 
                 // this needs to run on a worker thread so that the read loop (in the base class) is not blocked
@@ -174,7 +174,7 @@ namespace WebSockets.Client
             // this will only happen if the server has failed to reply with a close response
             if (_isOpen)
             {
-                _logger.Warning(this.GetType(), "Server failed to respond with a close response. Closing the connection from the client side.");
+                _logger.Warning(GetType(), "Server failed to respond with a close response. Closing the connection from the client side.");
 
                 // wait for data to be sent before we close the stream and client
                 _tcpClient.Client.Shutdown(SocketShutdown.Both);
@@ -182,7 +182,7 @@ namespace WebSockets.Client
                 _tcpClient.Close();
             }
 
-            _logger.Information(this.GetType(), "Client: Connection closed");
+            _logger.Information(GetType(), "Client: Connection closed");
         }
 
         protected override void OnConnectionClose(byte[] payload)

@@ -23,8 +23,8 @@ namespace WebSocketsCmd.Server
         protected override void OnTextFrame(string text)
         {
             var response = "ServerABC: " + text;
-            base.Send(response);
-            _logger.Information(this.GetType(), response);
+            Send(response);
+            _logger.Information(GetType(), response);
         }
     }
 }

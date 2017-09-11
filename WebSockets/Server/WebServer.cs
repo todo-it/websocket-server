@@ -46,7 +46,7 @@ namespace WebSockets
                 var localAddress = IPAddress.Any;
                 _listener = new TcpListener(localAddress, port);
                 _listener.Start();
-                _logger.Information(this.GetType(), "Server started listening on port {0}", port);
+                _logger.Information(GetType(), "Server started listening on port {0}", port);
                 StartAccept();
             }
             catch (SocketException ex)
@@ -74,7 +74,7 @@ namespace WebSockets
             _listener.Start();
             StartAccept();
             var port = ((IPEndPoint) _listener.LocalEndpoint).Port;
-            _logger.Information(this.GetType(), "Server started listening on port {0}", port);
+            _logger.Information(GetType(), "Server started listening on port {0}", port);
             return port;
         }
 
@@ -122,16 +122,16 @@ namespace WebSockets
             // we have no ssl certificate
             if (_sslCertificate == null)
             {
-                _logger.Information(this.GetType(), "Connection not secure");
+                _logger.Information(GetType(), "Connection not secure");
                 return stream;
             }
 
             try
             {
                 var sslStream = new SslStream(stream, false);
-                _logger.Information(this.GetType(), "Attempting to secure connection...");
+                _logger.Information(GetType(), "Attempting to secure connection...");
                 sslStream.AuthenticateAsServer(_sslCertificate, false, SslProtocols.Tls, true);
-                _logger.Information(this.GetType(), "Connection successfully secured");
+                _logger.Information(GetType(), "Connection successfully secured");
                 return sslStream;
             }
             catch (AuthenticationException e)
@@ -158,7 +158,7 @@ namespace WebSockets
                 {
                     // we are ready to listen for more connections (on another thread)
                     StartAccept();
-                    _logger.Information(this.GetType(), "Server: Connection opened");
+                    _logger.Information(GetType(), "Server: Connection opened");
 
                     // get a secure or insecure stream
                     var stream = GetStream(tcpClient);
@@ -190,7 +190,7 @@ namespace WebSockets
                     }
                 }
 
-                _logger.Information(this.GetType(), "Server: Connection closed");
+                _logger.Information(GetType(), "Server: Connection closed");
             }
             catch (ObjectDisposedException)
             {
@@ -198,7 +198,7 @@ namespace WebSockets
             }
             catch (Exception ex)
             {
-                _logger.Error(this.GetType(), ex);
+                _logger.Error(GetType(), ex);
             }
         }
 
@@ -221,7 +221,7 @@ namespace WebSockets
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(this.GetType(), ex);
+                    _logger.Error(GetType(), ex);
                 }
             }
         }
@@ -247,11 +247,11 @@ namespace WebSockets
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(this.GetType(), ex);
+                    _logger.Error(GetType(), ex);
                 }
 
                 CloseAllConnections();
-                _logger.Information(this.GetType(), "Web Server disposed");
+                _logger.Information(GetType(), "Web Server disposed");
             }
         }
     }

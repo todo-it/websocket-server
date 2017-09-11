@@ -38,7 +38,7 @@ namespace WebSockets.Server.WebSocket
 
         public void Respond()
         {
-            base.OpenBlocking(_stream, _tcpClient.Client);
+            OpenBlocking(_stream, _tcpClient.Client);
         }
 
         protected override void PerformHandshake(Stream stream)
@@ -59,14 +59,14 @@ namespace WebSockets.Server.WebSocket
                 }
 
                 var secWebSocketKey = webSocketKeyRegex.Match(header).Groups[1].Value.Trim();
-                var setWebSocketAccept = base.ComputeSocketAcceptString(secWebSocketKey);
+                var setWebSocketAccept = ComputeSocketAcceptString(secWebSocketKey);
                 var response = ("HTTP/1.1 101 Switching Protocols" + Environment.NewLine
                                    + "Connection: Upgrade" + Environment.NewLine
                                    + "Upgrade: websocket" + Environment.NewLine
                                    + "Sec-WebSocket-Accept: " + setWebSocketAccept);
 
                 HttpHelper.WriteHttpHeader(response, stream);
-                _logger.Information(this.GetType(), "Web Socket handshake sent");
+                _logger.Information(GetType(), "Web Socket handshake sent");
             }
             catch (WebSocketVersionNotSupportedException ex)
             {
@@ -102,7 +102,7 @@ namespace WebSockets.Server.WebSocket
                 }
 
                 _isDisposed = true;
-                _logger.Information(this.GetType(), "Sent web socket close message to client");
+                _logger.Information(GetType(), "Sent web socket close message to client");
                 CloseConnection(_tcpClient.Client);
             }
         }
@@ -110,7 +110,7 @@ namespace WebSockets.Server.WebSocket
         protected override void OnConnectionClose(byte[] payload)
         {
             Send(WebSocketOpCode.ConnectionClose, payload);
-            _logger.Information(this.GetType(), "Sent response close message to client");
+            _logger.Information(GetType(), "Sent response close message to client");
             _isDisposed = true;
 
             base.OnConnectionClose(payload);

@@ -45,7 +45,7 @@ namespace WebSocketsCmd
 
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
-            this.TraceEvent(eventCache, source, eventType, id, message, new object[] {});
+            TraceEvent(eventCache, source, eventType, id, message, new object[] {});
         }
 
         public override void WriteLine(string message)

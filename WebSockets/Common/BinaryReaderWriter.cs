@@ -33,7 +33,7 @@ namespace WebSockets.Common
 
         public static ushort ReadUShortExactly(Stream stream, bool isLittleEndian)
         {
-            var lenBuffer = BinaryReaderWriter.ReadExactly(2, stream);
+            var lenBuffer = ReadExactly(2, stream);
 
             if (!isLittleEndian)
             {
@@ -45,7 +45,7 @@ namespace WebSockets.Common
 
         public static ulong ReadULongExactly(Stream stream, bool isLittleEndian)
         {
-            var lenBuffer = BinaryReaderWriter.ReadExactly(8, stream);
+            var lenBuffer = ReadExactly(8, stream);
 
             if (!isLittleEndian)
             {
@@ -57,7 +57,7 @@ namespace WebSockets.Common
 
         public static long ReadLongExactly(Stream stream, bool isLittleEndian)
         {
-            var lenBuffer = BinaryReaderWriter.ReadExactly(8, stream);
+            var lenBuffer = ReadExactly(8, stream);
 
             if (!isLittleEndian)
             {

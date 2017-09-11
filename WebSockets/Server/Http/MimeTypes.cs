@@ -27,7 +27,7 @@ namespace WebSockets.Server.Http
                 {
                     var fileExtension = node.Attributes["fileExtension"].Value;
                     var mimeType = node.Attributes["mimeType"].Value;
-                    this.Add(fileExtension, mimeType);
+                    Add(fileExtension, mimeType);
                 }
             }
             catch (Exception ex)

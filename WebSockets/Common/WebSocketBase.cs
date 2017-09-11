@@ -140,11 +140,11 @@ namespace WebSockets.Common
 
             if (args.Reason == null)
             {
-                _logger.Information(this.GetType(), "Received web socket close message: {0}", args.Code);
+                _logger.Information(GetType(), "Received web socket close message: {0}", args.Code);
             }
             else
             {
-                _logger.Information(this.GetType(), "Received web socket close message: Code '{0}' Reason '{1}'", args.Code, args.Reason);
+                _logger.Information(GetType(), "Received web socket close message: Code '{0}' Reason '{1}'", args.Code, args.Reason);
             }
 
             if (ConnectionClose != null)
@@ -194,7 +194,7 @@ namespace WebSockets.Common
                     }
                     catch (InvalidCastException)
                     {
-                        _logger.Warning(this.GetType(), "Close code {0} not recognised", code);
+                        _logger.Warning(GetType(), "Close code {0} not recognised", code);
                         return new ConnectionCloseEventArgs(WebSocketCloseCode.Normal, null);
                     }
                 }
