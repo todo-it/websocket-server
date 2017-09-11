@@ -11,8 +11,6 @@ using WebSockets.Common;
 using System.Diagnostics;
 using System.Security.Policy;
 using WebSockets.Exceptions;
-using WebSockets.Server.WebSocket;
-using WebSockets.Server.Http;
 using System.Threading;
 using WebSockets.Events;
 using System.Threading.Tasks;

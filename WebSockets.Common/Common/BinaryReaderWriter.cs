@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WebSockets.Common
 {
-    internal class BinaryReaderWriter
+    public class BinaryReaderWriter
     {
         public static byte[] ReadExactly(int length, Stream stream)
         {

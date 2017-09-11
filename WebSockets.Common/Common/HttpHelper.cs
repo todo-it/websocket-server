@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Threading;
 using WebSockets.Exceptions;
 
-namespace WebSockets.Server.Http
+namespace WebSockets.Common
 {
     public class HttpHelper
     {

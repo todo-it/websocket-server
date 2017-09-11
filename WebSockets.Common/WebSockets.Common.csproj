@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F9105147-F123-46DA-A601-8B5A3B19505D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebSockets.Common</RootNamespace>
+    <AssemblyName>WebSockets.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\BinaryReaderWriter.cs" />
+    <Compile Include="Common\HttpHelper.cs" />
+    <Compile Include="Common\IWebSocketLogger.cs" />
+    <Compile Include="Common\WebSocketBase.cs" />
+    <Compile Include="Common\WebSocketCloseCode.cs" />
+    <Compile Include="Common\WebSocketFrame.cs" />
+    <Compile Include="Common\WebSocketFrameReader.cs" />
+    <Compile Include="Common\WebSocketFrameWriter.cs" />
+    <Compile Include="Common\WebSocketOpCode.cs" />
+    <Compile Include="Events\BinaryFrameEventArgs.cs" />
+    <Compile Include="Events\BinaryMultiFrameEventArgs.cs" />
+    <Compile Include="Events\ConnectionCloseEventArgs.cs" />
+    <Compile Include="Events\PingEventArgs.cs" />
+    <Compile Include="Events\PongEventArgs.cs" />
+    <Compile Include="Events\TextFrameEventArgs.cs" />
+    <Compile Include="Events\TextMultiFrameEventArgs.cs" />
+    <Compile Include="Exceptions\EntityTooLargeException.cs" />
+    <Compile Include="Exceptions\ServerListenerSocketException.cs" />
+    <Compile Include="Exceptions\WebSocketHandshakeFailedException.cs" />
+    <Compile Include="Exceptions\WebSocketVersionNotSupportedException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Exceptions\TODO.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

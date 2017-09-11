@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebSocketsCmd</RootNamespace>
     <AssemblyName>WebSocketsCmd</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -73,9 +75,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WebSockets\WebSockets.csproj">
+    <ProjectReference Include="..\WebSockets.Client\WebSockets.Client.csproj">
+      <Project>{9ee3166d-5dca-4341-b6c4-0db5ad2de1b2}</Project>
+      <Name>WebSockets.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebSockets.Common\WebSockets.Common.csproj">
+      <Project>{f9105147-f123-46da-a601-8b5a3b19505d}</Project>
+      <Name>WebSockets.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebSockets.Server\WebSockets.Server.csproj">
       <Project>{D2DBCC1D-CEF2-400B-A886-7E0D13A25F9C}</Project>
-      <Name>WebSockets</Name>
+      <Name>WebSockets.Server</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
