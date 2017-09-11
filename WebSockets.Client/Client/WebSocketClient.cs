@@ -90,7 +90,6 @@ namespace WebSockets.Client.Client
         protected override void PerformHandshake(Stream stream)
         {
             var uri = _uri;
-            var reader = new WebSocketFrameReader();
             var rand = new Random();
             var keyAsBytes = new byte[16];
             rand.NextBytes(keyAsBytes);

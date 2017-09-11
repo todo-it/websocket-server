@@ -179,8 +179,7 @@ namespace WebSockets.Common.Common
             var stream = _stream;
             OnConnectionOpened();
             var reader = new WebSocketFrameReader();
-            var fragmentedFrames = new List<WebSocketFrame>();
-
+            
             while (true)
             {
                 WebSocketFrame frame;
