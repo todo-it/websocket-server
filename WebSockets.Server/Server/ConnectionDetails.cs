@@ -5,13 +5,13 @@ namespace WebSockets.Server
 {
     public class ConnectionDetails
     {
-        public Stream Stream { get; private set; }
-        public TcpClient TcpClient { get; private set; }
-        public ConnectionType ConnectionType { get; private set; }
-        public string Header { get; private set; }
+        public Stream Stream { get; }
+        public TcpClient TcpClient { get; }
+        public ConnectionType ConnectionType { get; }
+        public string Header { get; }
 
         // this is the path attribute in the first line of the http header
-        public string Path { get; private set; }
+        public string Path { get; }
 
         public ConnectionDetails (Stream stream, TcpClient tcpClient, string path, ConnectionType connectionType, string header)
         {

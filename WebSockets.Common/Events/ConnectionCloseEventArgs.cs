@@ -5,8 +5,8 @@ namespace WebSockets.Common.Events
 {
     public class ConnectionCloseEventArgs : EventArgs
     {
-        public WebSocketCloseCode Code { get; private set; }
-        public string Reason { get; private set; }
+        public WebSocketCloseCode Code { get; }
+        public string Reason { get; }
 
         public ConnectionCloseEventArgs(WebSocketCloseCode code, string reason)
         {

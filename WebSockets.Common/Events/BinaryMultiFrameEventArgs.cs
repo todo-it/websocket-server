@@ -2,7 +2,7 @@
 {
     public class BinaryMultiFrameEventArgs : BinaryFrameEventArgs
     {
-        public bool IsLastFrame { get; private set; }
+        public bool IsLastFrame { get; }
 
         public BinaryMultiFrameEventArgs(byte[] payload, bool isLastFrame) : base(payload)
         {

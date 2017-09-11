@@ -4,7 +4,7 @@ namespace WebSockets.Common.Events
 {
     public class PingEventArgs : EventArgs
     {
-        public byte[] Payload { get; private set; }
+        public byte[] Payload { get; }
 
         public PingEventArgs(byte[] payload)
         {

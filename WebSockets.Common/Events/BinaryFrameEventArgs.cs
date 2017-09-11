@@ -4,7 +4,7 @@ namespace WebSockets.Common.Events
 {
     public class BinaryFrameEventArgs : EventArgs
     {
-        public byte[] Payload { get; private set; }
+        public byte[] Payload { get; }
 
         public BinaryFrameEventArgs(byte[] payload)
         {

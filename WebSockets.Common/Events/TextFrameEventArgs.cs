@@ -4,7 +4,7 @@ namespace WebSockets.Common.Events
 {
     public class TextFrameEventArgs : EventArgs
     {
-        public string Text { get; private set; }
+        public string Text { get; }
 
         public TextFrameEventArgs(string text)
         {

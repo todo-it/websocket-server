@@ -2,7 +2,7 @@
 {
     public class TextMultiFrameEventArgs : TextFrameEventArgs
     {
-        public bool IsLastFrame { get; private set; }
+        public bool IsLastFrame { get; }
 
         public TextMultiFrameEventArgs(string text, bool isLastFrame) : base(text)
         {
