@@ -228,10 +228,7 @@ namespace WebSockets.Server
                 {
                     if (_listener != null)
                     {
-                        if (_listener.Server != null)
-                        {
-                            _listener.Server.Close();
-                        }
+                        _listener.Server?.Close();
 
                         _listener.Stop();
                     }

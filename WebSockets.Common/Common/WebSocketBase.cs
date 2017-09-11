@@ -27,7 +27,7 @@ namespace WebSockets.Common.Common
         public event EventHandler<BinaryFrameEventArgs> BinaryFrame;
         public event EventHandler<BinaryMultiFrameEventArgs> BinaryMultiFrame;
 
-        public WebSocketBase(IWebSocketLogger logger)
+        protected WebSocketBase(IWebSocketLogger logger)
         {
             _logger = logger;
             _sendLocker = new object();
@@ -76,60 +76,39 @@ namespace WebSockets.Common.Common
 
         protected virtual void OnConnectionOpened()
         {
-            if (ConnectionOpened != null)
-            {
-                ConnectionOpened(this, new EventArgs());
-            }
+            ConnectionOpened?.Invoke(this, new EventArgs());
         }
 
         protected virtual void OnPing(byte[] payload)
         {
             Send(WebSocketOpCode.Pong, payload);
 
-            if (Ping != null)
-            {
-                Ping(this, new PingEventArgs(payload));
-            }
+            Ping?.Invoke(this, new PingEventArgs(payload));
         }
 
         protected virtual void OnPong(byte[] payload)
         {
-            if (Pong != null)
-            {
-                Pong(this, new PingEventArgs(payload));
-            }
+            Pong?.Invoke(this, new PingEventArgs(payload));
         }
 
         protected virtual void OnTextFrame(string text)
         {
-            if (TextFrame != null)
-            {
-                TextFrame(this, new TextFrameEventArgs(text));
-            }
+            TextFrame?.Invoke(this, new TextFrameEventArgs(text));
         }
 
         protected virtual void OnTextMultiFrame(string text, bool isLastFrame)
         {
-            if (TextMultiFrame != null)
-            {
-                TextMultiFrame(this, new TextMultiFrameEventArgs(text, isLastFrame));
-            }
+            TextMultiFrame?.Invoke(this, new TextMultiFrameEventArgs(text, isLastFrame));
         }
 
         protected virtual void OnBinaryFrame(byte[] payload)
         {
-            if (BinaryFrame != null)
-            {
-                BinaryFrame(this, new BinaryFrameEventArgs(payload));
-            }
+            BinaryFrame?.Invoke(this, new BinaryFrameEventArgs(payload));
         }
 
         protected virtual void OnBinaryMultiFrame(byte[] payload, bool isLastFrame)
         {
-            if (BinaryMultiFrame != null)
-            {
-                BinaryMultiFrame(this, new BinaryMultiFrameEventArgs(payload, isLastFrame));
-            }
+            BinaryMultiFrame?.Invoke(this, new BinaryMultiFrameEventArgs(payload, isLastFrame));
         }
 
         protected virtual void OnConnectionClose(byte[] payload)
@@ -145,10 +124,7 @@ namespace WebSockets.Common.Common
                 _logger.Information(GetType(), "Received web socket close message: Code '{0}' Reason '{1}'", args.Code, args.Reason);
             }
 
-            if (ConnectionClose != null)
-            {
-                ConnectionClose(this, args);
-            }
+            ConnectionClose?.Invoke(this, args);
         }
 
         protected abstract void PerformHandshake(Stream stream);
