@@ -20,12 +20,11 @@ namespace WebSocketsCmd
 {
     public class Program
     {
-        private static void TestClient(object state)
+        private static void TestClient(IWebSocketLogger logger, string hostname, int port)
         {
-            var logger = (IWebSocketLogger) state;
             using (var client = new ChatWebSocketClient(true, logger))
             {
-                Uri uri = new Uri("ws://localhost/chat");
+                Uri uri = new Uri($"ws://{hostname}:{port}/chat");
                 client.TextFrame += Client_TextFrame;
                 client.ConnectionOpened += Client_ConnectionOpened;
 
@@ -57,11 +56,11 @@ namespace WebSocketsCmd
 
         private static void Main(string[] args)
         {
-            IWebSocketLogger logger = new DiagnosticsTraceBasedLogger();
+            var logger = new DiagnosticsTraceBasedLogger();
 
             try
             {
-                int port = Settings.Default.Port;
+                var port = Settings.Default.Port;
                 
                 // used to decide what to do with incoming connections
                 ServiceFactory serviceFactory = new ServiceFactory(logger);
@@ -69,9 +68,10 @@ namespace WebSocketsCmd
                 using (WebServer server = new WebServer(serviceFactory, logger))
                 {
                     server.Listen(port);
-                    Thread clientThread = new Thread(new ParameterizedThreadStart(TestClient));
-                    clientThread.IsBackground = false;
-                    clientThread.Start(logger);
+
+                    ThreadPool.QueueUserWorkItem(x => TestClient(logger, "localhost", port));
+
+                    Console.WriteLine("Press any key to stop server");
                     Console.ReadKey();
                 }
             }
