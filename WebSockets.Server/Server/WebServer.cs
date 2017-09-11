@@ -82,22 +82,21 @@ namespace WebSockets.Server
             var getRegex = new Regex(@"^GET(.*)HTTP\/1\.1", RegexOptions.IgnoreCase);
 
             var getRegexMatch = getRegex.Match(header);
-            if (getRegexMatch.Success)
+            if (!getRegexMatch.Success)
             {
-                // extract the path attribute from the first line of the header
-                var path = getRegexMatch.Groups[1].Value.Trim();
-
-                // check if this is a web socket upgrade request
-                var webSocketUpgradeRegex = new Regex("Upgrade: websocket", RegexOptions.IgnoreCase);
-                var webSocketUpgradeRegexMatch = webSocketUpgradeRegex.Match(header);
-
-                if (webSocketUpgradeRegexMatch.Success)
-                {
-                    return new ConnectionDetails(stream, tcpClient, path, ConnectionType.WebSocket, header);
-                }
-                return new ConnectionDetails(stream, tcpClient, path, ConnectionType.Http, header);
+                return new ConnectionDetails(stream, tcpClient, string.Empty, ConnectionType.Unknown, header);
             }
-            return new ConnectionDetails(stream, tcpClient, string.Empty, ConnectionType.Unknown, header);
+            // extract the path attribute from the first line of the header
+            var path = getRegexMatch.Groups[1].Value.Trim();
+
+            // check if this is a web socket upgrade request
+            var webSocketUpgradeRegex = new Regex("Upgrade: websocket", RegexOptions.IgnoreCase);
+            var webSocketUpgradeRegexMatch = webSocketUpgradeRegex.Match(header);
+
+            return webSocketUpgradeRegexMatch.Success ? 
+                    new ConnectionDetails(stream, tcpClient, path, ConnectionType.WebSocket, header) 
+                : 
+                    new ConnectionDetails(stream, tcpClient, path, ConnectionType.Http, header);
         }
 
         private Stream GetStream(TcpClient tcpClient)
