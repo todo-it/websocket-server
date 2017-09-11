@@ -65,8 +65,6 @@
     <Compile Include="Server\ConnectionType.cs" />
     <Compile Include="Server\IService.cs" />
     <Compile Include="Server\IServiceFactory.cs" />
-    <Compile Include="Server\Http\MimeTypes.cs" />
-    <Compile Include="Server\Http\MimeTypesFactory.cs" />
     <Compile Include="Exceptions\EntityTooLargeException.cs" />
     <Compile Include="Exceptions\WebSocketVersionNotSupportedException.cs" />
     <Compile Include="Server\Http\HttpHelper.cs" />
