@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace WebSockets.Exceptions
+namespace WebSockets.Common.Exceptions
 {
     [Serializable]
     public class WebSocketHandshakeFailedException : Exception

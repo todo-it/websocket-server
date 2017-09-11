@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
 
-namespace WebSockets.Exceptions
+namespace WebSockets.Common.Exceptions
 {
     [Serializable]
     public class WebSocketVersionNotSupportedException : Exception

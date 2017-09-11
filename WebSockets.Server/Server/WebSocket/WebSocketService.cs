@@ -8,10 +8,10 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Threading;
 using WebSockets.Common;
-using WebSockets.Exceptions;
 using WebSockets.Server.Http;
 using System.IO;
-using WebSockets.Events;
+using WebSockets.Common.Common;
+using WebSockets.Common.Exceptions;
 
 namespace WebSockets.Server.WebSocket
 {

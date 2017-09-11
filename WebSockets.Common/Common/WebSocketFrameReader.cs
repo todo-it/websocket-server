@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Net.Sockets;
-using System.Diagnostics;
 
-namespace WebSockets.Common
+namespace WebSockets.Common.Common
 {
     //  see http://tools.ietf.org/html/rfc6455 for specification
 

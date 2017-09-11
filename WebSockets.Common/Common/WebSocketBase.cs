@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
-using System.IO;
-using WebSockets.Events;
+using WebSockets.Common.Events;
 
-namespace WebSockets.Common
+namespace WebSockets.Common.Common
 {
     public abstract class WebSocketBase
     {

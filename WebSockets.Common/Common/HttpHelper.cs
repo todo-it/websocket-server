@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Net.Sockets;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
-using System.Threading;
-using WebSockets.Exceptions;
+using System.Text;
+using WebSockets.Common.Exceptions;
 
-namespace WebSockets.Common
+namespace WebSockets.Common.Common
 {
     public class HttpHelper
     {

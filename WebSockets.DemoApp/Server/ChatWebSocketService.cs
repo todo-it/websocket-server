@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using WebSockets.Server.WebSocket;
 using WebSockets.Common;
 using System.IO;
+using WebSockets.Common.Common;
 
 namespace WebSocketsCmd.Server
 {

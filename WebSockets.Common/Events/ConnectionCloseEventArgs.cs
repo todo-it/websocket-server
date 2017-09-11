@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WebSockets.Common;
+using WebSockets.Common.Common;
 
-namespace WebSockets.Events
+namespace WebSockets.Common.Events
 {
     public class ConnectionCloseEventArgs : EventArgs
     {

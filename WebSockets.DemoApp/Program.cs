@@ -12,9 +12,10 @@ using System.Threading.Tasks;
 using WebSockets.Common;
 using System.Threading;
 using WebSockets;
-using WebSockets.Events;
 using WebSocketsCmd.Server;
 using System.IO;
+using WebSockets.Common.Common;
+using WebSockets.Common.Events;
 
 namespace WebSocketsCmd
 {

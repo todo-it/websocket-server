@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
-using WebSockets.Common;
-using System.Diagnostics;
-using System.Security.Policy;
-using WebSockets.Exceptions;
 using System.Threading;
-using WebSockets.Events;
 using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
+using WebSockets.Common.Common;
+using WebSockets.Common.Exceptions;
 
-namespace WebSockets.Client
+namespace WebSockets.Client.Client
 {
     public class WebSocketClient : WebSocketBase, IDisposable
     {

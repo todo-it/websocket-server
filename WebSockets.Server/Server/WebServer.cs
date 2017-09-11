@@ -1,25 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Collections;
-using System.Diagnostics;
-using WebSockets.Exceptions;
-using WebSockets.Server;
-using WebSockets.Server.Http;
-using WebSockets.Common;
 using System.Net.Security;
+using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
+using WebSockets.Common.Common;
+using WebSockets.Common.Exceptions;
 
-namespace WebSockets
+namespace WebSockets.Server
 {
     public class WebServer : IDisposable
     {

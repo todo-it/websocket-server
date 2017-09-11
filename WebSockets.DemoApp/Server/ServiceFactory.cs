@@ -10,6 +10,7 @@ using System.Diagnostics;
 using WebSockets.Server;
 using WebSockets.Server.Http;
 using WebSockets.Common;
+using WebSockets.Common.Common;
 
 namespace WebSocketsCmd.Server
 {
