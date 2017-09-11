@@ -72,7 +72,7 @@ namespace WebSockets.Server
         private void StartAccept()
         {
             // this is a non-blocking operation. It will consume a worker thread from the threadpool
-            _listener.BeginAcceptTcpClient(new AsyncCallback(HandleAsyncConnection), null);
+            _listener.BeginAcceptTcpClient(HandleAsyncConnection, null);
         }
 
         private static ConnectionDetails GetConnectionDetails(Stream stream, TcpClient tcpClient)

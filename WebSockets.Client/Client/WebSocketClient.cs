@@ -48,7 +48,7 @@ namespace WebSockets.Client.Client
         {
             if (isSecure)
             {
-                var sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                var sslStream = new SslStream(tcpClient.GetStream(), false, ValidateServerCertificate, null);
                 _logger.Information(GetType(), "Attempting to secure connection...");
                 sslStream.AuthenticateAsClient("clusteredanalytics.com");
                 _logger.Information(GetType(), "Connection successfully secured.");
@@ -111,7 +111,7 @@ namespace WebSockets.Client.Client
             var regexPattern = "Sec-WebSocket-Accept: (.*)";
             var regex = new Regex(regexPattern);
 
-            var response = string.Empty;
+            string response;
 
             try
             {
