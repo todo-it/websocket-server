@@ -59,10 +59,10 @@
     <Compile Include="Common\WebSocketOpCode.cs" />
     <Compile Include="Exceptions\ServerListenerSocketException.cs" />
     <Compile Include="Exceptions\WebSocketHandshakeFailedException.cs" />
+    <Compile Include="Server\Http\RegularWebRequestNotSupportedService.cs" />
     <Compile Include="Server\Http\BadRequestService.cs" />
     <Compile Include="Server\ConnectionDetails.cs" />
     <Compile Include="Server\ConnectionType.cs" />
-    <Compile Include="Server\Http\HttpService.cs" />
     <Compile Include="Server\IService.cs" />
     <Compile Include="Server\IServiceFactory.cs" />
     <Compile Include="Server\Http\MimeTypes.cs" />

@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSockets", "WebSockets\WebSockets.csproj", "{D2DBCC1D-CEF2-400B-A886-7E0D13A25F9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketsCmd", "WebSocketsCmd\WebSocketsCmd.csproj", "{8B0F4F0F-C3EB-4891-A612-84BED9EC3D71}"
