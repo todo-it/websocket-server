@@ -57,7 +57,7 @@ namespace WebSocketsCmd
 
         private static void Main(string[] args)
         {
-            IWebSocketLogger logger = new WebSocketLogger();
+            IWebSocketLogger logger = new DiagnosticsTraceBasedLogger();
 
             try
             {

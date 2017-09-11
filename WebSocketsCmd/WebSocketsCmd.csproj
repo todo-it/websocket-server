@@ -55,7 +55,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="WebSocketLogger.cs" />
+    <Compile Include="DiagnosticsTraceBasedLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

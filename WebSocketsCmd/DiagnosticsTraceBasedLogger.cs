@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace WebSocketsCmd
 {
-    internal class WebSocketLogger : IWebSocketLogger
+    internal class DiagnosticsTraceBasedLogger : IWebSocketLogger
     {
         public void Information(Type type, string format, params object[] args)
         {
