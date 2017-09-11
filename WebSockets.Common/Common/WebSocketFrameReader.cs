@@ -8,13 +8,6 @@ namespace WebSockets.Common.Common
 
     public class WebSocketFrameReader
     {
-        private byte[] _buffer;
-
-        public WebSocketFrameReader()
-        {
-            _buffer = new byte[1024*64];
-        }
-
         public WebSocketFrame Read(Stream stream, Socket socket)
         {
             byte byte1;
@@ -56,7 +49,7 @@ namespace WebSockets.Common.Common
                 // apply the mask key
                 for (var i = 0; i < encodedPayload.Length; i++)
                 {
-                    decodedPayload[i] = (Byte) (encodedPayload[i] ^ maskKey[i%maskKeyLen]);
+                    decodedPayload[i] = (byte) (encodedPayload[i] ^ maskKey[i%maskKeyLen]);
                 }
             }
             else
@@ -76,20 +69,23 @@ namespace WebSockets.Common.Common
             // read a short length or a long length depending on the value of len
             if (len == 126)
             {
-                len = BinaryReaderWriter.ReadUShortExactly(stream, false);
+                return BinaryReaderWriter.ReadUShortExactly(stream, false);
             }
-            else if (len == 127)
+
+            if (len != 127)
             {
-                len = (uint) BinaryReaderWriter.ReadULongExactly(stream, false);
-                const uint maxLen = 2147483648; // 2GB
-
-                // protect ourselves against bad data
-                if (len > maxLen || len < 0)
-                {
-                    throw new ArgumentOutOfRangeException(string.Format("Payload length out of range. Min 0 max 2GB. Actual {0:#,##0} bytes.", len));
-                }
+                return len;
             }
 
+            len = (uint) BinaryReaderWriter.ReadULongExactly(stream, false);
+            const uint maxLen = 2147483648; // 2GB
+
+            // protect ourselves against bad data
+            if (len > maxLen)
+            {
+                throw new ArgumentOutOfRangeException(string.Format("Payload length out of range. Min 0 max 2GB. Actual {0:#,##0} bytes.", len));
+            }
+              
             return len;
         }
     }
