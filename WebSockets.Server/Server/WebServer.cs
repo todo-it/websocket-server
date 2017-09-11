@@ -95,15 +95,9 @@ namespace WebSockets.Server
                 {
                     return new ConnectionDetails(stream, tcpClient, path, ConnectionType.WebSocket, header);
                 }
-                else
-                {
-                    return new ConnectionDetails(stream, tcpClient, path, ConnectionType.Http, header);
-                }
+                return new ConnectionDetails(stream, tcpClient, path, ConnectionType.Http, header);
             }
-            else
-            {
-                return new ConnectionDetails(stream, tcpClient, string.Empty, ConnectionType.Unknown, header); 
-            }
+            return new ConnectionDetails(stream, tcpClient, string.Empty, ConnectionType.Unknown, header);
         }
 
         private Stream GetStream(TcpClient tcpClient)

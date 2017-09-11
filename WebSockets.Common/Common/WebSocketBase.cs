@@ -161,10 +161,7 @@ namespace WebSockets.Common.Common
                             var reason = Encoding.UTF8.GetString(payload, 2, payload.Length - 2);
                             return new ConnectionCloseEventArgs(closeCode, reason);
                         }
-                        else
-                        {
-                            return new ConnectionCloseEventArgs(closeCode, null);
-                        }
+                        return new ConnectionCloseEventArgs(closeCode, null);
                     }
                     catch (InvalidCastException)
                     {

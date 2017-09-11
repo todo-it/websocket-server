@@ -29,10 +29,7 @@ namespace WebSockets.Common.Common
                 {
                     throw;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
 
             // process first byte

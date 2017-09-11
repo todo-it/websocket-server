@@ -54,11 +54,8 @@ namespace WebSockets.Client.Client
                 _logger.Information(GetType(), "Connection successfully secured.");
                 return sslStream;
             }
-            else
-            {
-                _logger.Information(GetType(), "Connection not secure");
-                return tcpClient.GetStream();
-            }
+            _logger.Information(GetType(), "Connection not secure");
+            return tcpClient.GetStream();
         }
 
         public virtual void OpenBlocking(Uri uri)
@@ -133,10 +130,7 @@ namespace WebSockets.Client.Client
             {
                 throw new WebSocketHandshakeFailedException(string.Format("Handshake failed because the accept string from the server '{0}' was not the expected string '{1}'", expectedAcceptString, actualAcceptString));
             }
-            else
-            {
-                _logger.Information(GetType(), "Handshake response received. Connection upgraded to WebSocket protocol.");
-            }
+            _logger.Information(GetType(), "Handshake response received. Connection upgraded to WebSocket protocol.");
         }
 
         public virtual void Dispose()
