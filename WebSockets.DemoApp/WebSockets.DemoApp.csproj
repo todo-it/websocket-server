@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Client\ChatWebSocketClient.cs" />
     <Compile Include="Server\ChatWebSocketService.cs" />
-    <Compile Include="Server\ServiceFactory.cs" />
+    <Compile Include="Server\DemoServiceFactory.cs" />
     <Compile Include="CustomConsoleTraceListener.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

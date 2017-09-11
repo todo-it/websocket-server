@@ -55,7 +55,7 @@ namespace WebSocketsCmd
                 var port = Settings.Default.Port;
                 
                 // used to decide what to do with incoming connections
-                var serviceFactory = new ServiceFactory(logger);
+                var serviceFactory = new DemoServiceFactory(logger);
 
                 using (var server = new WebServer(serviceFactory, logger))
                 {

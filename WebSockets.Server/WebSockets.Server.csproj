@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Server\Http\RegularWebRequestNotSupportedService.cs" />
+    <Compile Include="Server\Http\RequestNotSupportedService.cs" />
     <Compile Include="Server\Http\BadRequestService.cs" />
     <Compile Include="Server\ConnectionDetails.cs" />
     <Compile Include="Server\ConnectionType.cs" />
