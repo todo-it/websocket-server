@@ -77,7 +77,7 @@ namespace WebSockets.Client.Client
 
             _uri = uri;
             IsOpen = true;
-            OpenBlocking(_stream, _tcpClient.Client);
+            ProcessBlocking(_stream, _tcpClient.Client);
             IsOpen = false;
         }
 

@@ -40,7 +40,7 @@ namespace WebSockets.Common.Common
             _isOpen = false;
         }
 
-        protected void OpenBlocking(Stream stream, Socket socket)
+        protected void ProcessBlocking(Stream stream, Socket socket)
         {
             _socket = socket;
             _stream = stream;
@@ -241,6 +241,8 @@ namespace WebSockets.Common.Common
                             OnBinaryMultiFrame(frame.DecodedPayload, frame.IsFinBitSet);
                         }
                         break;
+                    default:
+                        throw new ArgumentException("Unrecognized frame");
                 }
             }
         }

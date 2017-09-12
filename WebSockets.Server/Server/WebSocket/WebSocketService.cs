@@ -30,7 +30,7 @@ namespace WebSockets.Server.WebSocket
 
         public void Respond()
         {
-            OpenBlocking(_stream, _tcpClient.Client);
+            ProcessBlocking(_stream, _tcpClient.Client);
         }
 
         protected override void PerformHandshake(Stream stream)
