@@ -60,31 +60,25 @@ namespace WebSockets.Client.Client
 
         public virtual void OpenBlocking(Uri uri)
         {
-            if (!_isOpen)
+            if (_isOpen)
             {
-                var host = uri.Host;
-                var port = uri.Port;
-                _tcpClient = new TcpClient();
-                _tcpClient.NoDelay = _noDelay;
-
-                IPAddress ipAddress;
-                if (IPAddress.TryParse(host, out ipAddress))
-                {
-                    _tcpClient.Connect(ipAddress, port);
-                }
-                else
-                {
-                    _tcpClient.Connect(host, port);
-                }
-
-                var isSecure = port == 443;
-                _stream = GetStream(_tcpClient, isSecure);
-
-                _uri = uri;
-                _isOpen = true;
-                base.OpenBlocking(_stream, _tcpClient.Client);
-                _isOpen = false;
+                throw new ArgumentException("Connection is already open");    
             }
+
+            var host = uri.Host;
+            var port = uri.Port;
+            _tcpClient = new TcpClient();
+            _tcpClient.NoDelay = _noDelay;
+                
+            _tcpClient.Connect(host, port);
+
+            var isSecure = port == 443;
+            _stream = GetStream(_tcpClient, isSecure);
+
+            _uri = uri;
+            _isOpen = true;
+            OpenBlocking(_stream, _tcpClient.Client);
+            _isOpen = false;
         }
 
         protected override void PerformHandshake(Stream stream)
@@ -134,21 +128,23 @@ namespace WebSockets.Client.Client
 
         public virtual void Dispose()
         {
-            if (_isOpen)
+            if (!_isOpen)
             {
-                using (var stream = new MemoryStream())
-                {
-                    // set the close reason to GoingAway
-                    BinaryReaderWriter.WriteUShort((ushort) WebSocketCloseCode.GoingAway, stream, false);
-
-                    // send close message to server to begin the close handshake
-                    Send(WebSocketOpCode.ConnectionClose, stream.ToArray());
-                    _logger.Information(GetType(), "Sent websocket close message to server. Reason: GoingAway");
-                }
-
-                // this needs to run on a worker thread so that the read loop (in the base class) is not blocked
-                Task.Factory.StartNew(WaitForServerCloseMessage);
+                return;
             }
+
+            using (var stream = new MemoryStream())
+            {
+                // set the close reason to GoingAway
+                BinaryReaderWriter.WriteUShort((ushort) WebSocketCloseCode.GoingAway, stream, false);
+
+                // send close message to server to begin the close handshake
+                Send(WebSocketOpCode.ConnectionClose, stream.ToArray());
+                _logger.Information(GetType(), "Sent websocket close message to server. Reason: GoingAway");
+            }
+
+            // this needs to run on a worker thread so that the read loop (in the base class) is not blocked
+            Task.Factory.StartNew(WaitForServerCloseMessage);
         }
 
         private void WaitForServerCloseMessage()
@@ -158,16 +154,18 @@ namespace WebSockets.Client.Client
             _conectionCloseWait.WaitOne(TimeSpan.FromSeconds(10));
 
             // this will only happen if the server has failed to reply with a close response
-            if (_isOpen)
+            if (!_isOpen)
             {
-                _logger.Warning(GetType(), "Server failed to respond with a close response. Closing the connection from the client side.");
-
-                // wait for data to be sent before we close the stream and client
-                _tcpClient.Client.Shutdown(SocketShutdown.Both);
-                _stream.Close();
-                _tcpClient.Close();
+                _logger.Information(GetType(), "Client: Already closed connection");
+                return;
             }
 
+            _logger.Warning(GetType(), "Server failed to respond with a close response. Closing the connection from the client side.");
+
+            // wait for data to be sent before we close the stream and client
+            _tcpClient.Client.Shutdown(SocketShutdown.Both);
+            _stream.Close();
+            _tcpClient.Close();
             _logger.Information(GetType(), "Client: Connection closed");
         }
 
@@ -179,6 +177,5 @@ namespace WebSockets.Client.Client
             _conectionCloseWait.Set();
             base.OnConnectionClose(payload);
         }
-
     }
 }
