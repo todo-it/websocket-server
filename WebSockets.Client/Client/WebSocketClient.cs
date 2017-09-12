@@ -60,7 +60,7 @@ namespace WebSockets.Client.Client
 
         public virtual void OpenBlocking(Uri uri)
         {
-            if (_isOpen)
+            if (IsOpen)
             {
                 throw new ArgumentException("Connection is already open");    
             }
@@ -76,9 +76,9 @@ namespace WebSockets.Client.Client
             _stream = GetStream(_tcpClient, isSecure);
 
             _uri = uri;
-            _isOpen = true;
+            IsOpen = true;
             OpenBlocking(_stream, _tcpClient.Client);
-            _isOpen = false;
+            IsOpen = false;
         }
 
         protected override void PerformHandshake(Stream stream)
@@ -128,7 +128,7 @@ namespace WebSockets.Client.Client
 
         public virtual void Dispose()
         {
-            if (!_isOpen)
+            if (!IsOpen)
             {
                 return;
             }
@@ -154,7 +154,7 @@ namespace WebSockets.Client.Client
             _conectionCloseWait.WaitOne(TimeSpan.FromSeconds(10));
 
             // this will only happen if the server has failed to reply with a close response
-            if (!_isOpen)
+            if (!IsOpen)
             {
                 _logger.Information(GetType(), "Client: Already closed connection");
                 return;
@@ -173,7 +173,7 @@ namespace WebSockets.Client.Client
         {
             // server has either responded to a client close request or closed the connection for its own reasons
             // the server will close the tcp connection so the client will not have to do it
-            _isOpen = false;
+            IsOpen = false;
             _conectionCloseWait.Set();
             base.OnConnectionClose(payload);
         }

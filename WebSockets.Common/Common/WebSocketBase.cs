@@ -16,7 +16,7 @@ namespace WebSockets.Common.Common
         private WebSocketFrameWriter _writer;
         private WebSocketOpCode _multiFrameOpcode;
         private Socket _socket;
-        protected bool _isOpen;
+        private volatile bool _isOpen; //NOTE: volatile is needed because access to _isOpen doesn't always happens after lock (that internally creates memory barrier)
 
         public event EventHandler ConnectionOpened;
         public event EventHandler<ConnectionCloseEventArgs> ConnectionClose;
@@ -26,6 +26,12 @@ namespace WebSockets.Common.Common
         public event EventHandler<TextMultiFrameEventArgs> TextMultiFrame;
         public event EventHandler<BinaryFrameEventArgs> BinaryFrame;
         public event EventHandler<BinaryMultiFrameEventArgs> BinaryMultiFrame;
+
+        protected bool IsOpen
+        {
+            get { return _isOpen; }
+            set { _isOpen = value; }
+        }
 
         protected WebSocketBase(IWebSocketLogger logger)
         {
@@ -46,15 +52,14 @@ namespace WebSockets.Common.Common
 
         protected virtual void Send(WebSocketOpCode opCode, byte[] toSend, bool isLastFrame)
         {
-            if (_isOpen)
+            lock (_sendLocker)
             {
-                lock (_sendLocker)
+                if (!_isOpen)
                 {
-                    if (_isOpen)
-                    {
-                        _writer.Write(opCode, toSend, isLastFrame);
-                    }
+                    throw new ArgumentException("Could not send data because connection is not open");   
                 }
+                
+                _writer.Write(opCode, toSend, isLastFrame);
             }
         }
 
