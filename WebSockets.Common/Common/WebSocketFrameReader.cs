@@ -8,6 +8,27 @@ namespace WebSockets.Common.Common
 
     public class WebSocketFrameReader
     {
+        /// <summary>
+        /// Reads valid frame. If could not read one (f.e. got exception) then it returns null.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="socket"></param>
+        /// <returns></returns>
+        public WebSocketFrame SafeReadValidOrNull(Stream stream, Socket socket)
+        {
+            try
+            {
+                var result = Read(stream, socket);
+             
+                // if we have received unexpected data
+                return result == null || !result.IsValid ? null : result;
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
+        }
+
         public WebSocketFrame Read(Stream stream, Socket socket)
         {
             byte byte1;

@@ -178,7 +178,7 @@ namespace WebSockets.Common.Common
 
             return new ConnectionCloseEventArgs(WebSocketCloseCode.Normal, null);
         }
-
+        
         private void MainReadLoop()
         {
             var stream = _stream;
@@ -187,23 +187,9 @@ namespace WebSockets.Common.Common
             
             while (true)
             {
-                WebSocketFrame frame;
-
-                try
-                {
-                    frame = reader.Read(stream, _socket);
-                    if (frame == null)
-                    {
-                        return;
-                    }
-                }
-                catch (ObjectDisposedException)
-                {
-                    return;
-                }
+                var frame = reader.SafeReadValidOrNull(stream, _socket);
                 
-                // if we have received unexpected data
-                if (!frame.IsValid)
+                if (frame == null)
                 {
                     return;
                 }
