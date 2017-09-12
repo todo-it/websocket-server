@@ -207,57 +207,54 @@ namespace WebSockets.Common.Common
                 {
                     return;
                 }
-
-                if (frame.OpCode == WebSocketOpCode.ContinuationFrame)
+                
+                switch (frame.OpCode)
                 {
-                    switch (_multiFrameOpcode)
-                    {
-                        case WebSocketOpCode.TextFrame:
-                            var data = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
-                            OnTextMultiFrame(data, frame.IsFinBitSet);
-                            break;
-                        case WebSocketOpCode.BinaryFrame:
-                            OnBinaryMultiFrame(frame.DecodedPayload, frame.IsFinBitSet);
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (frame.OpCode)
-                    {
-                        case WebSocketOpCode.ConnectionClose:
-                            OnConnectionClose(frame.DecodedPayload);
-                            return;
-                        case WebSocketOpCode.Ping:
-                            OnPing(frame.DecodedPayload);
-                            break;
-                        case WebSocketOpCode.Pong:
-                            OnPong(frame.DecodedPayload);
-                            break;
-                        case WebSocketOpCode.TextFrame:
-                            var data = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
-                            if (frame.IsFinBitSet)
-                            {
-                                OnTextFrame(data);
-                            }
-                            else
-                            {
-                                _multiFrameOpcode = frame.OpCode;
-                                OnTextMultiFrame(data, frame.IsFinBitSet);
-                            }
-                            break;
-                        case WebSocketOpCode.BinaryFrame:
-                            if (frame.IsFinBitSet)
-                            {
-                                OnBinaryFrame(frame.DecodedPayload);
-                            }
-                            else
-                            {
-                                _multiFrameOpcode = frame.OpCode;
+                    case WebSocketOpCode.ContinuationFrame:
+                        switch (_multiFrameOpcode)
+                        {
+                            case WebSocketOpCode.TextFrame:
+                                var contData = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
+                                OnTextMultiFrame(contData, frame.IsFinBitSet);
+                                break;
+                            case WebSocketOpCode.BinaryFrame:
                                 OnBinaryMultiFrame(frame.DecodedPayload, frame.IsFinBitSet);
-                            }
-                            break;
-                    }
+                                break;
+                        }
+                        break;
+
+                    case WebSocketOpCode.ConnectionClose:
+                        OnConnectionClose(frame.DecodedPayload);
+                        return;
+                    case WebSocketOpCode.Ping:
+                        OnPing(frame.DecodedPayload);
+                        break;
+                    case WebSocketOpCode.Pong:
+                        OnPong(frame.DecodedPayload);
+                        break;
+                    case WebSocketOpCode.TextFrame:
+                        var data = Encoding.UTF8.GetString(frame.DecodedPayload, 0, frame.DecodedPayload.Length);
+                        if (frame.IsFinBitSet)
+                        {
+                            OnTextFrame(data);
+                        }
+                        else
+                        {
+                            _multiFrameOpcode = frame.OpCode;
+                            OnTextMultiFrame(data, frame.IsFinBitSet);
+                        }
+                        break;
+                    case WebSocketOpCode.BinaryFrame:
+                        if (frame.IsFinBitSet)
+                        {
+                            OnBinaryFrame(frame.DecodedPayload);
+                        }
+                        else
+                        {
+                            _multiFrameOpcode = frame.OpCode;
+                            OnBinaryMultiFrame(frame.DecodedPayload, frame.IsFinBitSet);
+                        }
+                        break;
                 }
             }
         }
