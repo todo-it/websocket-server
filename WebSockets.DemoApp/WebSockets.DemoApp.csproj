@@ -8,8 +8,8 @@
     <ProjectGuid>{8B0F4F0F-C3EB-4891-A612-84BED9EC3D71}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebSocketsCmd</RootNamespace>
-    <AssemblyName>WebSocketsCmd</AssemblyName>
+    <RootNamespace>WebSockets.DemoApp</RootNamespace>
+    <AssemblyName>WebSockets.DemoApp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -46,10 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\ChatWebSocketClient.cs" />
-    <Compile Include="Server\ChatWebSocketService.cs" />
+    <Compile Include="Client\ChatClientProtocol.cs" />
+    <Compile Include="Server\ChatServerProtocol.cs" />
     <Compile Include="Server\DemoServiceFactory.cs" />
-    <Compile Include="CustomConsoleTraceListener.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -57,7 +56,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="DiagnosticsTraceBasedLogger.cs" />
+    <Compile Include="ConsoleWriteLineBasedLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

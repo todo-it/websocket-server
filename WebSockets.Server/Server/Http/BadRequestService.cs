@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using WebSockets.Common.Common;
 
-namespace WebSockets.Server.Http
+namespace WebSockets.Server.Server.Http
 {
     public class BadRequestService : IService
     {
@@ -22,7 +22,7 @@ namespace WebSockets.Server.Http
 
             // limit what we log. Headers can be up to 16K in size
             var header = _header.Length > 255 ? _header.Substring(0,255) + "..." : _header;
-            _logger.Warning(GetType(), "Bad request: '{0}'", header);
+            _logger.Err(GetType(), "Bad request: '{0}'", header);
         }
 
         public void Dispose()

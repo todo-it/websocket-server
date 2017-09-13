@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using WebSockets.Server;
-using WebSockets.Server.Http;
 using WebSockets.Common.Common;
+using WebSockets.Server.Server;
+using WebSockets.Server.Server.Http;
+using WebSockets.Server.Server.WebSocket;
 
-namespace WebSocketsCmd.Server
+namespace WebSockets.DemoApp.Server
 {
     internal class DemoServiceFactory : IServiceFactory
     {
         private readonly IWebSocketLogger _logger;
-        private readonly Dictionary<string,Func<ConnectionDetails,IService>> _webSocketHandlers;
+        private readonly Dictionary<string,Func<ConnectionDetails,IConnectionProtocol>> _webSocketHandlers;
         
         public DemoServiceFactory(IWebSocketLogger logger)
         {
             _logger = logger;
-            _webSocketHandlers = new Dictionary<string, Func<ConnectionDetails, IService>> {
-                {"/chat", x => new ChatWebSocketService(x.Stream, x.TcpClient, x.Header, _logger)}
+            _webSocketHandlers = new Dictionary<string, Func<ConnectionDetails, IConnectionProtocol>> {
+                {"/chat", x => new ChatServerProtocol(_logger)}
             };
         }
 
@@ -25,11 +26,17 @@ namespace WebSocketsCmd.Server
             {
                 case ConnectionType.WebSocket:
                     // you can support different kinds of web socket connections using a different path
-                    Func<ConnectionDetails,IService> handler;
+                    Func<ConnectionDetails,IConnectionProtocol> handler;
 
                     if (_webSocketHandlers.TryGetValue(connectionDetails.Path, out handler))
                     {
-                        return handler(connectionDetails);
+                        return new WebSocketService(
+                            connectionDetails.Stream,
+                            connectionDetails.TcpClient,
+                            connectionDetails.Header,
+                            true,
+                            _logger,
+                            handler(connectionDetails));
                     }
                     return new RequestNotSupportedService("websocket handler not present for given url", connectionDetails.Stream, connectionDetails.Header, _logger);
                     

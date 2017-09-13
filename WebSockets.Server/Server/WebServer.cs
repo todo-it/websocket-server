@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using WebSockets.Common.Common;
 using WebSockets.Common.Exceptions;
 
-namespace WebSockets.Server
+namespace WebSockets.Server.Server
 {
     public class WebServer : IDisposable
     {
@@ -37,13 +37,14 @@ namespace WebSockets.Server
                 var localAddress = IPAddress.Any;
                 _listener = new TcpListener(localAddress, port);
                 _listener.Start();
-                _logger.Information(GetType(), "Server started listening on port {0}", port);
+                _logger.Info(GetType(), "Server started listening on port {0}", port);
                 StartAccept();
             }
             catch (SocketException ex)
             {
-                var message = string.Format("Error listening on port {0}. Make sure IIS or another application is not running and consuming your port.", port);
-                throw new ServerListenerSocketException(message, ex);
+                throw new ServerListenerSocketException(
+                    $"Error listening on port {port}. Make sure another application is not running and consuming your port.", 
+                    ex);
             }
         }
 
@@ -65,7 +66,7 @@ namespace WebSockets.Server
             _listener.Start();
             StartAccept();
             var port = ((IPEndPoint) _listener.LocalEndpoint).Port;
-            _logger.Information(GetType(), "Server started listening on port {0}", port);
+            _logger.Info(GetType(), "Server started listening on port {0}", port);
             return port;
         }
 
@@ -106,16 +107,16 @@ namespace WebSockets.Server
             // we have no ssl certificate
             if (_sslCertificate == null)
             {
-                _logger.Information(GetType(), "Connection not secure");
+                _logger.Info(GetType(), "Connection is not secure");
                 return stream;
             }
 
             try
             {
                 var sslStream = new SslStream(stream, false);
-                _logger.Information(GetType(), "Attempting to secure connection...");
+                _logger.Debug(GetType(), "Attempting to secure connection...");
                 sslStream.AuthenticateAsServer(_sslCertificate, false, SslProtocols.Tls, true);
-                _logger.Information(GetType(), "Connection successfully secured");
+                _logger.Info(GetType(), "Connection successfully secured");
                 return sslStream;
             }
             catch (AuthenticationException e)
@@ -142,7 +143,7 @@ namespace WebSockets.Server
                 {
                     // we are ready to listen for more connections (on another thread)
                     StartAccept();
-                    _logger.Information(GetType(), "Server: Connection opened");
+                    _logger.Debug(GetType(), "Server: Connection opened");
 
                     // get a secure or insecure stream
                     var stream = GetStream(tcpClient);
@@ -174,7 +175,7 @@ namespace WebSockets.Server
                     }
                 }
 
-                _logger.Information(GetType(), "Server: Connection closed");
+                _logger.Debug(GetType(), "Server: Connection closed");
             }
             catch (ObjectDisposedException)
             {
@@ -182,7 +183,7 @@ namespace WebSockets.Server
             }
             catch (Exception ex)
             {
-                _logger.Error(GetType(), ex);
+                _logger.Err(GetType(), ex);
             }
         }
 
@@ -205,7 +206,7 @@ namespace WebSockets.Server
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(GetType(), ex);
+                    _logger.Err(GetType(), ex);
                 }
             }
         }
@@ -228,11 +229,11 @@ namespace WebSockets.Server
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(GetType(), ex);
+                    _logger.Err(GetType(), ex);
                 }
 
                 CloseAllConnections();
-                _logger.Information(GetType(), "Web Server disposed");
+                _logger.Debug(GetType(), "Web Server disposed");
             }
         }
     }

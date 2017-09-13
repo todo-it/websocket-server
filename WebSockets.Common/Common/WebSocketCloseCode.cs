@@ -1,4 +1,6 @@
-﻿namespace WebSockets.Common.Common
+﻿using System.IO;
+
+namespace WebSockets.Common.Common
 {
     public enum WebSocketCloseCode
     {
@@ -15,5 +17,19 @@
         EnpointExpectsExtension = 1010,
         ServerUnexpectedCondition = 1011,
         ServerRegectTlsHandshake = 1015,
+    }
+
+    public static class WebSocketCloseCodeExtensions
+    {
+        public static byte[] AsBytesForSend(this WebSocketCloseCode self)
+        {
+            using (var stream = new MemoryStream())
+            {
+                BinaryReaderWriter.WriteUShort((ushort)self, stream, false);
+                
+                return stream.ToArray();
+            }
+
+        }
     }
 }

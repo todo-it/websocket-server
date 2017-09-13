@@ -1,4 +1,4 @@
-﻿namespace WebSockets.Server
+﻿namespace WebSockets.Server.Server
 {
     /// <summary>
     /// Implement this to decide what connection to use based on the http header

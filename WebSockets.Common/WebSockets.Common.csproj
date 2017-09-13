@@ -43,20 +43,19 @@
   <ItemGroup>
     <Compile Include="Common\BinaryReaderWriter.cs" />
     <Compile Include="Common\HttpHelper.cs" />
+    <Compile Include="Common\IConnectionController.cs" />
+    <Compile Include="Common\IConnectionProtocol.cs" />
     <Compile Include="Common\IWebSocketLogger.cs" />
+    <Compile Include="Common\Magics.cs" />
+    <Compile Include="Common\MultiFrame.cs" />
+    <Compile Include="Common\ReceivedData.cs" />
+    <Compile Include="Common\SuccessOrFailure.cs" />
     <Compile Include="Common\WebSocketBase.cs" />
     <Compile Include="Common\WebSocketCloseCode.cs" />
     <Compile Include="Common\WebSocketFrame.cs" />
     <Compile Include="Common\WebSocketFrameReader.cs" />
     <Compile Include="Common\WebSocketFrameWriter.cs" />
     <Compile Include="Common\WebSocketOpCode.cs" />
-    <Compile Include="Events\BinaryFrameEventArgs.cs" />
-    <Compile Include="Events\BinaryMultiFrameEventArgs.cs" />
-    <Compile Include="Events\ConnectionCloseEventArgs.cs" />
-    <Compile Include="Events\PingEventArgs.cs" />
-    <Compile Include="Events\PongEventArgs.cs" />
-    <Compile Include="Events\TextFrameEventArgs.cs" />
-    <Compile Include="Events\TextMultiFrameEventArgs.cs" />
     <Compile Include="Exceptions\EntityTooLargeException.cs" />
     <Compile Include="Exceptions\ServerListenerSocketException.cs" />
     <Compile Include="Exceptions\WebSocketHandshakeFailedException.cs" />

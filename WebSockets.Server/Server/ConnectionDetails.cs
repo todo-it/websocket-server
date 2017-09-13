@@ -1,7 +1,7 @@
-﻿using System.Net.Sockets;
-using System.IO;
+﻿using System.IO;
+using System.Net.Sockets;
 
-namespace WebSockets.Server
+namespace WebSockets.Server.Server
 {
     public class ConnectionDetails
     {

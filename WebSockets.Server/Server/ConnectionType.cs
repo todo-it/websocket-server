@@ -1,4 +1,4 @@
-﻿namespace WebSockets.Server
+﻿namespace WebSockets.Server.Server
 {
     public enum ConnectionType
     {

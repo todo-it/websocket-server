@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebSockets.Server
+namespace WebSockets.Server.Server
 {
     public interface IService : IDisposable
     {

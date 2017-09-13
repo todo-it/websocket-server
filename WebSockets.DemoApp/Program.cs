@@ -1,54 +1,45 @@
 ﻿using System;
-using WebSockets.Server;
-using System.Diagnostics;
-using WebSocketsCmd.Client;
-using WebSocketsCmd.Properties;
+using System.Linq;
+using System.Net.Sockets;
 using System.Threading;
-using WebSocketsCmd.Server;
+using WebSockets.Client.Client;
 using WebSockets.Common.Common;
-using WebSockets.Common.Events;
+using WebSockets.DemoApp.Client;
+using WebSockets.DemoApp.Properties;
+using WebSockets.DemoApp.Server;
+using WebSockets.Server.Server;
 
-namespace WebSocketsCmd
+namespace WebSockets.DemoApp
 {
     public class Program
     {
         private static void TestClient(IWebSocketLogger logger, string hostname, int port)
         {
-            using (var client = new ChatWebSocketClient(true, logger))
+            var uri = new Uri($"ws://{hostname}:{port}/chat");
+            
+            var tcpClient = new TcpClient();
+            tcpClient.NoDelay = true;
+                
+            tcpClient.Connect(hostname, port);
+
+            var isSecure = port == 443;
+            var targetHostForSsl = "somehost";
+            var stream = HttpHelper.GetStream(logger, tcpClient, isSecure, targetHostForSsl,
+                (sender, cert, chain, err) => HttpHelper.ValidateServerCertificate(logger, sender, cert, chain, err));
+            
+            using (var client = new WebSocketClient(true, logger, new ChatClientProtocol(logger), uri, stream, tcpClient))
             {
-                var uri = new Uri($"ws://{hostname}:{port}/chat");
-                client.TextFrame += Client_TextFrame;
-                client.ConnectionOpened += Client_ConnectionOpened;
-
                 // test the open handshake
-                client.OpenBlocking(uri);
+                client.ProcessBlocking();
+                
+                logger.Debug(typeof(Program), "Client finished");
+                //Console.ReadKey();
             }
-
-            Trace.TraceInformation("Client finished, press any key");
-            Console.ReadKey();
-        }
-
-        private static void Client_ConnectionOpened(object sender, EventArgs e)
-        {
-            Trace.TraceInformation("Client: Connection Opened");
-            var client = (ChatWebSocketClient) sender;
-
-            // test sending a message to the server
-            client.Send("Hi");
-        }
-
-        private static void Client_TextFrame(object sender, TextFrameEventArgs e)
-        {
-            Trace.TraceInformation("Client: {0}", e.Text);
-            var client = (ChatWebSocketClient) sender;
-
-            // lets test the close handshake
-            client.Dispose();
         }
 
         private static void Main(string[] args)
         {
-            var logger = new DiagnosticsTraceBasedLogger();
+            var logger = new ConsoleWriteLineBasedLogger();
 
             try
             {
@@ -61,15 +52,18 @@ namespace WebSocketsCmd
                 {
                     server.Listen(port);
 
-                    ThreadPool.QueueUserWorkItem(x => TestClient(logger, "localhost", port));
-
+                    if (!args.Contains("--noclient"))
+                    {
+                        ThreadPool.QueueUserWorkItem(x => TestClient(logger, "localhost", port));    
+                    }
+                    
                     Console.WriteLine("Press any key to stop server");
                     Console.ReadKey();
                 }
             }
             catch (Exception ex)
             {
-                logger.Error(typeof(Program), ex);
+                logger.Err(typeof(Program), ex);
                 Console.ReadKey();
             }
         }

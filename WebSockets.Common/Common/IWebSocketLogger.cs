@@ -4,9 +4,10 @@ namespace WebSockets.Common.Common
 {
     public interface IWebSocketLogger
     {
-        void Information(Type type, string format, params object[] args);
-        void Warning(Type type, string format, params object[] args);
-        void Error(Type type, string format, params object[] args);
-        void Error(Type type, Exception exception);
+        void Debug(Type type, string format, params object[] args);
+        void Info(Type type, string format, params object[] args);
+        void Warn(Type type, string format, params object[] args);
+        void Err(Type type, string format, params object[] args);
+        void Err(Type type, Exception exception);
     }
 }

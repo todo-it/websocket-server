@@ -11,15 +11,8 @@ namespace WebSockets.Common.Common
     //   the third fragment would have an opcode of ContinuationFrame and isLastFrame true.
 
     public class WebSocketFrameWriter
-    {
-        private readonly Stream _stream;
-
-        public WebSocketFrameWriter(Stream stream)
-        {
-            _stream = stream;
-        }
-
-        public void Write(WebSocketOpCode opCode, byte[] payload, bool isLastFrame)
+    {        
+        public void Write(Stream stream, WebSocketOpCode opCode, byte[] payload, bool isLastFrame)
         {
             // best to write everything to a memory stream before we push it onto the wire
             // not really necessary but I like it this way
@@ -51,19 +44,19 @@ namespace WebSockets.Common.Common
 
                 memoryStream.Write(payload, 0, payload.Length);
                 var buffer = memoryStream.ToArray();
-                _stream.Write(buffer, 0, buffer.Length);
+                stream.Write(buffer, 0, buffer.Length);
             }
         }
 
-        public void Write(WebSocketOpCode opCode, byte[] payload)
+        public void Write(Stream stream, WebSocketOpCode opCode, byte[] payload)
         {
-            Write(opCode, payload, true);
+            Write(stream, opCode, payload, true);
         }
 
-        public void WriteText(string text)
+        public void WriteText(Stream stream, string text)
         {
             var responseBytes = Encoding.UTF8.GetBytes(text);
-            Write(WebSocketOpCode.TextFrame, responseBytes);
+            Write(stream, WebSocketOpCode.TextFrame, responseBytes);
         }
     }
 }
