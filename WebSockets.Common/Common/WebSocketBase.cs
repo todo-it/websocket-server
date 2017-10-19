@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
 namespace WebSockets.Common.Common
 {
-    
     public abstract class WebSocketBase : IConnectionController
     {
         private readonly IWebSocketLogger _logger;
@@ -19,6 +17,7 @@ namespace WebSockets.Common.Common
         private readonly WebSocketFrameReader _reader = new WebSocketFrameReader();
         private readonly WebSocketFrameWriter _writer = new WebSocketFrameWriter();
         private readonly IConnectionProtocol _protocol;
+        private bool _onClosedCalled = false;
 
         protected bool IsOpen
         {
@@ -33,7 +32,18 @@ namespace WebSockets.Common.Common
             _isOpen = false;
         }
 
-        public abstract void CloseConnection(WebSocketCloseCode code);
+        public void CloseConnection(WebSocketCloseCode code)
+        {
+            if (!_onClosedCalled)
+            {
+                _onClosedCalled = true;
+                _protocol.OnConnectionClosed(this, code);    
+            }
+            
+            CloseConnectionImpl(code);    
+        }
+
+        protected abstract void CloseConnectionImpl(WebSocketCloseCode code);
         
         public void Send(WebSocketOpCode opCode, byte[] input, bool isLastFrame = true)
         {
@@ -49,6 +59,11 @@ namespace WebSockets.Common.Common
             _isOpen = true; //if above line thrown exception then connection is not really open as one cannot send valid frames
             
             _protocol.Process(this);
+            if (!_onClosedCalled)
+            {
+                _onClosedCalled = true;
+                _protocol.OnConnectionClosed(this, WebSocketCloseCode.Normal);
+            }
         }
 
         protected virtual void RawSend(WebSocketOpCode opCode, byte[] toSend, bool isLastFrame)
@@ -138,7 +153,6 @@ namespace WebSockets.Common.Common
                 case WebSocketOpCode.ConnectionClose:
                     IsOpen = false;
                     var codeAndReason = GetConnectionCloseCodeAndReason(frame.DecodedPayload);
-                    _protocol.OnConnectionClosed(this, codeAndReason.Item1, codeAndReason.Item2);
                     return null;
 
                 case WebSocketOpCode.Ping:

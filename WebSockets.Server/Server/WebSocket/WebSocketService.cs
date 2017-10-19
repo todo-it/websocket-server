@@ -29,7 +29,7 @@ namespace WebSockets.Server.Server.WebSocket
             ProcessBlocking(_stream, _tcpClient.Client);
         }
         
-        public override void CloseConnection(WebSocketCloseCode code)
+        protected override void CloseConnectionImpl(WebSocketCloseCode code)
         {
             _logger.Debug(GetType(), "CloseConnection {0}", code);
             if (_closeWasSent)

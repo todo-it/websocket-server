@@ -3,7 +3,7 @@
     public interface IConnectionProtocol
     {
         void OnConnectionStarted(IConnectionController ctx);
-        void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code, string reason);
+        void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code);
         void Process(IConnectionController ctx);
     }
 }

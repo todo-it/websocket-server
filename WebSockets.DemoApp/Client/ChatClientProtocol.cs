@@ -16,7 +16,7 @@ namespace WebSockets.DemoApp.Client
             _logger.Debug(GetType(), "[Client] I got connected to my server");
         }
 
-        public void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code, string reason)
+        public void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code)
         {
             _logger.Debug(GetType(), "[Client] I got disconnected from my server");
         }

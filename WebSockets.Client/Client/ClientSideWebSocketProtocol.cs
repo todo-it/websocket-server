@@ -65,15 +65,15 @@ namespace WebSockets.Client.Client
             _logger.Debug(GetType(), "Client: Connection closed");
         }
 
-        public void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code, string reason)
+        public void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code)
         {
             _logger.Debug(GetType(), "OnConnectionClosed()");
             
             // server has either responded to a client close request or closed the connection for its own reasons
             // the server will close the tcp connection so the client will not have to do it
             _serverConfirmedClose = true;
+            _adapted.OnConnectionClosed(ctx, code);
             ctx.CloseConnection(code);
-            _adapted.OnConnectionClosed(ctx, code, reason);
         }
         
         public void Process(IConnectionController ctx)

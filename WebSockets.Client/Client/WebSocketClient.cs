@@ -24,7 +24,7 @@ namespace WebSockets.Client.Client
             _tcpClient = tcpClient;
         }
         
-        public override void CloseConnection(WebSocketCloseCode _)
+        protected override void CloseConnectionImpl(WebSocketCloseCode code)
         {
             CleanupConnection();
         }

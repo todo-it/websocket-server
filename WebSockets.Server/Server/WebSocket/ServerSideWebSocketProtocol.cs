@@ -27,9 +27,9 @@ namespace WebSockets.Server.Server.WebSocket
             _adapted.OnConnectionStarted(ctx);
         }
 
-        public void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code, string reason)
+        public void OnConnectionClosed(IConnectionController ctx, WebSocketCloseCode code)
         {
-            _adapted.OnConnectionClosed(ctx, code, reason);
+            _adapted.OnConnectionClosed(ctx, code);
         }
         
         public void Process(IConnectionController ctx)
