@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -46,7 +47,14 @@ namespace WebSockets.DemoApp
                 var port = Settings.Default.Port;
                 
                 // used to decide what to do with incoming connections
-                var serviceFactory = new DemoServiceFactory(logger);
+                var webSocketHandlers = new Dictionary<string, Func<IConnectionProtocol>> {
+                    {"/chat", () => new ChatServerProtocol(logger)}
+                };
+
+                var serviceFactory = new DefaultServiceFactory(logger, x => {
+                    Func<IConnectionProtocol> handler;
+                    return webSocketHandlers.TryGetValue(x.Path, out handler) ? handler() : null;
+                });
 
                 using (var server = new WebServer(serviceFactory, logger))
                 {
