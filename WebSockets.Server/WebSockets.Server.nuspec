@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WebSockets.Server</id>
+	<title>.NET WebSocket Server and Client library compatible with Mono on Linux - server part</title>
+    <version>1.0.0.0</version>
+    <authors>Original author: Dave "ninjasource" Haig. Adaptations: Dominik Pytlewski</authors>
+    <owners/>
+    <licenseUrl>https://github.com/todo-it/websocket-server/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/todo-it/websocket-server</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>nwebsocketlib</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>websockets mono linux</tags>
+    <dependencies>
+      <dependency id="WebSockets.Common" version="1.0.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin/Release/WebSockets.Server.dll" target="lib/net45/WebSockets.Server.dll" />
+    <file src="bin/Release/WebSockets.Server.pdb" target="lib/net45/WebSockets.Server.pdb" />
+  </files>
+</package>
