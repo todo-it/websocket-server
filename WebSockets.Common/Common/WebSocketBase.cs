@@ -188,5 +188,19 @@ namespace WebSockets.Common.Common
                     throw new ArgumentException("Unrecognized frame");
             }
         }
+
+        protected abstract void SuperDispose();
+
+        public void Dispose() {
+            SuperDispose();
+
+            try
+            {
+                _protocol.Dispose();    
+            } catch(Exception)
+            {
+                _logger.Warn(GetType(), "Failed to dispose protocol");
+            }
+        }
     }
 }

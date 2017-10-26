@@ -53,5 +53,10 @@ namespace WebSockets.DemoApp.Server
             }
             ctx.CloseConnection(WebSocketCloseCode.GoingAway);
         }
+        
+        public void Dispose()
+        {
+            //nothing to do here
+        }
     }
 }

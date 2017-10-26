@@ -43,5 +43,10 @@ namespace WebSockets.DemoApp.Client
 
             ctx.ReceiveOrNull();
         }
+
+        public void Dispose()
+        {
+            //nothing to do here
+        }
     }
 }

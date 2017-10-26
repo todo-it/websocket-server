@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace WebSockets.Common.Common
 {
-    public interface IConnectionController
+    public interface IConnectionController : IDisposable
     {
         void CloseConnection(WebSocketCloseCode code);
         /// <summary>

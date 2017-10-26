@@ -8,7 +8,7 @@ using WebSockets.Common.Common;
 
 namespace WebSockets.Client.Client
 {
-    public class WebSocketClient : WebSocketBase, IDisposable
+    public class WebSocketClient : WebSocketBase
     {
         private readonly bool _noDelay;
         private readonly IWebSocketLogger _logger;
@@ -69,7 +69,7 @@ namespace WebSockets.Client.Client
             IsOpen = false;
         }
 
-        public virtual void Dispose()
+        protected override void SuperDispose()
         {
             try
             {

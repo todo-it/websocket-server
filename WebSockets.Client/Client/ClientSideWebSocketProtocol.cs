@@ -125,5 +125,10 @@ namespace WebSockets.Client.Client
             }
             _logger.Debug(GetType(), "Handshake response received. Connection upgraded to WebSocket protocol.");
         }
+
+        public void Dispose()
+        {
+            _adapted.Dispose();
+        }
     }
 }

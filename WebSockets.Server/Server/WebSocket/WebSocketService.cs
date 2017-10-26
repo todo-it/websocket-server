@@ -39,7 +39,14 @@ namespace WebSockets.Server.Server.WebSocket
             
             if (_stream.CanWrite)
             {
-                Send(WebSocketOpCode.ConnectionClose, WebSocketCloseCode.Normal.AsBytesForSend());
+                try
+                {
+                    Send(WebSocketOpCode.ConnectionClose, WebSocketCloseCode.Normal.AsBytesForSend());    
+                } catch(Exception)
+                {
+                    _logger.Debug(GetType(), "Failed to send connectionClose operation to client");    
+                }
+                
                 _closeWasSent = true;
                 _logger.Debug(GetType(), "Sent web socket close message to client");
             }
@@ -75,7 +82,7 @@ namespace WebSockets.Server.Server.WebSocket
             }
         }
         
-        public virtual void Dispose()
+        protected override void SuperDispose()
         {
             CleanupConnection();
         }

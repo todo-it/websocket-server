@@ -89,5 +89,10 @@ namespace WebSockets.Server.Server.WebSocket
 
             return SuccessOrFailure<string>.CreateSuccess(response);
         }
+        
+        public void Dispose()
+        {
+            _adapted.Dispose();
+        }
     }
 }
