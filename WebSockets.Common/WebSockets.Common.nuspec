@@ -3,7 +3,7 @@
   <metadata>
     <id>WebSockets.Common</id>
 	<title>.NET WebSocket Server and Client library compatible with Mono on Linux - common part</title>
-    <version>1.0.0.0</version>
+    <version>1.1.0.0</version>
     <authors>Original author: Dave "ninjasource" Haig. Adaptations: Dominik Pytlewski</authors>
     <owners/>
     <licenseUrl>https://github.com/todo-it/websocket-server/blob/master/LICENSE.txt</licenseUrl>
